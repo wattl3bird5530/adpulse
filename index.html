@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdPulse — by Srijana M R</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c28;--border:#2a2a3d;
+  --meta:#1877F2;--meta-light:#4fa3ff;--google:#EA4335;--google-green:#34A853;
+  --accent:#7c3aed;--accent2:#06d6a0;--text:#f0f0f5;--muted:#7a7a9a;
+  --tag-bg:#1e1e30;--success:#06d6a0;--warning:#fbbf24;--danger:#ef4444;--card-hover:#1f1f2e;
+}
+[data-theme="light"] {
+  --bg:#f4f4f8;--surface:#ffffff;--surface2:#eeeef5;--border:#d0d0e0;
+  --text:#0a0a1a;--muted:#6060880;--tag-bg:#e8e8f5;--card-hover:#f0f0fa;--muted:#555570;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(124,58,237,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(14px);position:sticky;top:0;z-index:200;gap:10px;flex-wrap:wrap;}
+[data-theme="light"] nav{background:rgba(244,244,248,0.92);}
+.logo{font-size:1.3rem;font-weight:800;letter-spacing:-0.5px;white-space:nowrap;}
+.logo span{color:var(--accent);}
+.logo sub{font-size:0.5rem;color:var(--muted);font-weight:400;vertical-align:middle;margin-left:4px;font-family:'JetBrains Mono';}
+.nav-center{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
+.nav-tab{padding:6px 13px;border-radius:6px;border:1px solid transparent;cursor:pointer;font-family:'Syne';font-size:0.78rem;font-weight:600;background:transparent;color:var(--muted);transition:all 0.2s;white-space:nowrap;}
+.nav-tab:hover{color:var(--text);border-color:var(--border);}
+.nav-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.xp-badge{font-family:'JetBrains Mono';font-size:0.75rem;background:var(--surface2);border:1px solid var(--border);padding:5px 11px;border-radius:20px;color:var(--accent2);white-space:nowrap;}
+.streak-badge{font-family:'JetBrains Mono';font-size:0.75rem;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);padding:5px 11px;border-radius:20px;color:var(--warning);white-space:nowrap;}
+.theme-toggle{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:1rem;transition:all 0.2s;}
+.theme-toggle:hover{border-color:var(--accent);}
+
+/* PAGES */
+.page{display:none;animation:fadeIn 0.3s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* HERO */
+.hero{padding:48px 24px 32px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;max-width:1100px;margin:0 auto;}
+@media(max-width:768px){.hero{grid-template-columns:1fr;}.nav-center{display:none;}.mobile-menu-btn{display:flex!important;}}
+.hero-eyebrow{font-size:0.7rem;font-family:'JetBrains Mono';color:var(--accent2);letter-spacing:1.5px;margin-bottom:10px;}
+.hero-title{font-size:2.6rem;font-weight:800;line-height:1.1;letter-spacing:-1px;}
+.hero-title .grad{background:linear-gradient(135deg,var(--meta-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{color:var(--muted);margin-top:12px;line-height:1.7;font-size:0.9rem;}
+.hero-creator{margin-top:16px;font-size:0.75rem;color:var(--muted);font-family:'JetBrains Mono';}
+.hero-creator span{color:var(--accent2);font-weight:500;}
+.hero-cta{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap;}
+.btn{padding:10px 22px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne';font-weight:700;font-size:0.85rem;transition:all 0.2s;}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:#6d28d9;transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,58,237,0.3);}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+.btn-sm{padding:7px 14px;font-size:0.78rem;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;text-align:center;}
+.stat-card .num{font-size:1.7rem;font-weight:800;color:var(--accent);}
+.stat-card .lbl{font-size:0.68rem;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono';}
+
+/* PROGRESS OVERVIEW */
+.progress-overview{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin:0 24px 24px;max-width:1052px;margin-left:auto;margin-right:auto;}
+.po-title{font-size:0.8rem;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+.po-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+.po-item{background:var(--surface2);border-radius:8px;padding:10px 12px;}
+.po-name{font-size:0.72rem;color:var(--muted);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.po-bar{height:4px;background:var(--border);border-radius:2px;}
+.po-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.6s;}
+.po-pct{font-size:0.65rem;font-family:'JetBrains Mono';color:var(--accent2);margin-top:4px;}
+
+/* SECTION */
+.section-header{padding:24px 24px 12px;max-width:1100px;margin:0 auto;}
+.section-title{font-size:1.3rem;font-weight:800;}
+.section-sub{color:var(--muted);font-size:0.82rem;margin-top:4px;}
+
+/* MODULES GRID */
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:0 24px 32px;max-width:1100px;margin:0 auto;}
+.module-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;}
+.module-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
+.module-card.meta::before{background:linear-gradient(135deg,rgba(24,119,242,0.08),transparent);}
+.module-card.google::before{background:linear-gradient(135deg,rgba(234,67,53,0.08),transparent);}
+.module-card.mixed::before{background:linear-gradient(135deg,rgba(124,58,237,0.08),transparent);}
+.module-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.module-card:hover::before{opacity:1;}
+.module-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.platform-badge{font-size:0.6rem;font-weight:700;padding:3px 9px;border-radius:20px;font-family:'JetBrains Mono';letter-spacing:0.5px;}
+.platform-badge.meta{background:rgba(24,119,242,0.15);color:var(--meta-light);}
+.platform-badge.google{background:rgba(234,67,53,0.15);color:#ff7b72;}
+.platform-badge.mixed{background:rgba(124,58,237,0.15);color:#a78bfa;}
+.diff-dots{display:flex;gap:3px;}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--border);}
+.dot.filled.easy{background:var(--success);}
+.dot.filled.medium{background:var(--warning);}
+.dot.filled.hard{background:var(--danger);}
+.module-title{font-size:0.95rem;font-weight:700;margin-bottom:5px;}
+.module-desc{font-size:0.78rem;color:var(--muted);line-height:1.5;}
+.module-footer{display:flex;justify-content:space-between;align-items:center;margin-top:14px;}
+.task-count{font-size:0.68rem;color:var(--muted);font-family:'JetBrains Mono';}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;margin-top:8px;}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.4s;}
+.module-complete-badge{position:absolute;top:12px;right:12px;font-size:0.6rem;background:rgba(6,214,160,0.15);color:var(--success);border:1px solid rgba(6,214,160,0.3);border-radius:10px;padding:2px 7px;font-family:'JetBrains Mono';}
+
+/* LEARN LAYOUT */
+.learn-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 57px);}
+@media(max-width:768px){.learn-layout{grid-template-columns:1fr;}}
+.sidebar{border-right:1px solid var(--border);padding:20px 0;position:sticky;top:57px;height:calc(100vh - 57px);overflow-y:auto;}
+@media(max-width:768px){.sidebar{display:none;}}
+.sidebar-group{margin-bottom:6px;}
+.sidebar-group-label{font-size:0.6rem;color:var(--muted);font-family:'JetBrains Mono';padding:8px 18px 4px;letter-spacing:1px;text-transform:uppercase;}
+.sidebar-item{padding:8px 18px;cursor:pointer;font-size:0.8rem;color:var(--muted);transition:all 0.15s;display:flex;align-items:center;gap:8px;border-left:2px solid transparent;}
+.sidebar-item:hover{color:var(--text);background:var(--surface2);}
+.sidebar-item.active{color:var(--text);background:var(--surface2);border-left-color:var(--accent);}
+.sidebar-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sidebar-check{margin-left:auto;font-size:0.65rem;color:var(--success);}
+.content-area{padding:28px 36px;max-width:760px;}
+@media(max-width:768px){.content-area{padding:20px 16px;}}
+.lesson-header{margin-bottom:24px;}
+.lesson-platform{font-size:0.68rem;font-family:'JetBrains Mono';color:var(--muted);margin-bottom:6px;}
+.lesson-title{font-size:1.6rem;font-weight:800;letter-spacing:-0.5px;line-height:1.2;}
+.lesson-body{font-size:0.88rem;line-height:1.8;color:var(--text);opacity:0.9;}
+.lesson-body h3{font-size:0.95rem;font-weight:700;color:var(--text);margin:20px 0 7px;}
+.lesson-body p{margin-bottom:10px;}
+.tip-box{background:rgba(6,214,160,0.07);border:1px solid rgba(6,214,160,0.2);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:0.81rem;}
+.tip-box strong{color:var(--accent2);}
+.warn-box{background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:12px 16px;margin:14px 0;font-size:0.81rem;}
+.warn-box strong{color:var(--warning);}
+.code-block{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono';font-size:0.76rem;color:#a0f0d0;margin:10px 0;overflow-x:auto;line-height:1.7;}
+.lesson-mark-btn{margin-top:20px;padding:9px 22px;background:transparent;border:1px solid var(--success);color:var(--success);border-radius:7px;cursor:pointer;font-family:'Syne';font-size:0.8rem;font-weight:700;transition:all 0.2s;}
+.lesson-mark-btn:hover{background:rgba(6,214,160,0.1);}
+.lesson-mark-btn.done{background:rgba(6,214,160,0.15);cursor:default;}
+
+/* YT SECTION */
+.yt-section{margin-top:28px;padding-top:20px;border-top:1px solid var(--border);}
+.yt-section-title{font-size:0.68rem;font-family:'JetBrains Mono';color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.yt-section-title::before{content:'▶';width:18px;height:18px;background:#FF0000;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:0.55rem;color:#fff;flex-shrink:0;}
+.yt-grid{display:flex;flex-direction:column;gap:12px;}
+.yt-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s;}
+.yt-card:hover{border-color:rgba(255,0,0,0.4);}
+.yt-embed-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;cursor:pointer;}
+.yt-thumbnail{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.82;}
+.yt-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(255,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.5);transition:transform 0.2s,background 0.2s;}
+.yt-embed-wrap:hover .yt-play-btn{transform:translate(-50%,-50%) scale(1.1);background:#FF0000;}
+.yt-play-btn::after{content:'▶';color:#fff;font-size:1rem;margin-left:3px;}
+.yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.yt-info{padding:10px 14px;}
+.yt-video-title{font-size:0.84rem;font-weight:700;line-height:1.4;margin-bottom:3px;}
+.yt-channel{font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono';}
+.yt-tag{font-size:0.6rem;padding:2px 6px;border-radius:7px;background:rgba(255,0,0,0.1);color:#ff7b72;font-family:'JetBrains Mono';margin-left:5px;}
+
+/* TASKS */
+.tasks-container{padding:24px;max-width:900px;margin:0 auto;}
+.task-filters{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Syne';font-size:0.75rem;transition:all 0.2s;}
+.filter-btn.active,.filter-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,58,237,0.1);}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:20px;margin-bottom:12px;transition:all 0.2s;}
+.task-card:hover{border-color:var(--accent);}
+.task-card.completed{opacity:0.7;border-color:var(--success);}
+.task-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.task-title{font-size:0.95rem;font-weight:700;}
+.task-meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;}
+.tag{font-size:0.62rem;padding:2px 8px;border-radius:10px;font-family:'JetBrains Mono';background:var(--tag-bg);color:var(--muted);}
+.task-desc{font-size:0.8rem;color:var(--muted);margin-top:8px;line-height:1.6;}
+.task-steps{margin-top:12px;}
+.task-step{display:flex;gap:9px;align-items:flex-start;font-size:0.8rem;margin-bottom:7px;color:var(--text);opacity:0.85;}
+.step-num{background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-family:'JetBrains Mono';color:var(--accent);}
+.task-complete-btn{margin-top:12px;padding:7px 18px;background:transparent;border:1px solid var(--success);color:var(--success);border-radius:6px;cursor:pointer;font-family:'Syne';font-size:0.78rem;font-weight:600;transition:all 0.2s;}
+.task-complete-btn:hover{background:rgba(6,214,160,0.1);}
+.task-complete-btn.done{background:rgba(6,214,160,0.15);cursor:default;}
+.xp-chip{font-size:0.68rem;font-family:'JetBrains Mono';color:var(--accent2);background:rgba(6,214,160,0.1);padding:3px 8px;border-radius:9px;white-space:nowrap;}
+
+/* SHORTCUTS */
+.shortcuts-container{padding:24px;max-width:1000px;margin:0 auto;}
+.shortcuts-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+.sh-tab{padding:7px 18px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Syne';font-weight:600;font-size:0.82rem;transition:all 0.2s;}
+.sh-tab.meta.active{background:rgba(24,119,242,0.15);border-color:var(--meta);color:var(--meta-light);}
+.sh-tab.google.active{background:rgba(234,67,53,0.15);border-color:var(--google);color:#ff7b72;}
+.shortcuts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:11px;}
+.shortcut-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;display:flex;flex-direction:column;gap:7px;transition:border-color 0.2s;}
+.shortcut-card:hover{border-color:var(--accent);}
+.shortcut-keys{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+.key{background:var(--surface2);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:2px 7px;font-family:'JetBrains Mono';font-size:0.72rem;color:var(--text);}
+.key-plus{color:var(--muted);font-size:0.68rem;}
+.shortcut-action{font-size:0.82rem;font-weight:700;}
+.shortcut-desc{font-size:0.73rem;color:var(--muted);line-height:1.5;}
+.shortcut-context{font-size:0.62rem;font-family:'JetBrains Mono';color:var(--accent);}
+
+/* QUIZ */
+.quiz-container{padding:32px 24px;max-width:660px;margin:0 auto;}
+.quiz-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;}
+.quiz-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.quiz-num{font-family:'JetBrains Mono';font-size:0.76rem;color:var(--muted);}
+.quiz-bar{flex:1;height:3px;background:var(--border);border-radius:2px;margin:0 14px;}
+.quiz-bar-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s;}
+.quiz-q{font-size:1.05rem;font-weight:700;margin-bottom:18px;line-height:1.5;}
+.quiz-options{display:flex;flex-direction:column;gap:9px;}
+.quiz-option{padding:11px 14px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.84rem;color:var(--muted);transition:all 0.2s;background:var(--surface2);}
+.quiz-option:hover:not(.locked){border-color:var(--accent);color:var(--text);}
+.quiz-option.correct{border-color:var(--success);background:rgba(6,214,160,0.1);color:var(--success);}
+.quiz-option.wrong{border-color:var(--danger);background:rgba(239,68,68,0.1);color:var(--danger);}
+.quiz-feedback{margin-top:14px;padding:12px;border-radius:8px;font-size:0.82rem;display:none;}
+.quiz-feedback.show{display:block;}
+.quiz-feedback.correct{background:rgba(6,214,160,0.07);border:1px solid rgba(6,214,160,0.2);color:var(--success);}
+.quiz-feedback.wrong{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);color:#ff7b72;}
+.quiz-next{margin-top:14px;width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Syne';font-weight:700;font-size:0.88rem;display:none;transition:background 0.2s;}
+.quiz-next:hover{background:#6d28d9;}
+.quiz-next.show{display:block;}
+.quiz-result{text-align:center;padding:16px 0;}
+.quiz-score{font-size:2.8rem;font-weight:800;color:var(--accent);}
+.quiz-score-sub{color:var(--muted);font-size:0.88rem;margin-top:5px;}
+.quiz-restart{margin-top:16px;padding:11px 26px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Syne';font-weight:700;}
+
+/* GLOSSARY */
+.glossary-container{padding:24px;max-width:880px;margin:0 auto;}
+.glossary-search{width:100%;padding:11px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Syne';font-size:0.88rem;margin-bottom:20px;outline:none;transition:border-color 0.2s;}
+.glossary-search:focus{border-color:var(--accent);}
+.glossary-item{padding:14px 0;border-bottom:1px solid var(--border);}
+.glossary-term{font-size:0.92rem;font-weight:700;color:var(--accent2);margin-bottom:5px;}
+.glossary-def{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+.glossary-platform{font-size:0.62rem;font-family:'JetBrains Mono';margin-top:4px;color:var(--accent);}
+
+/* LEADERBOARD */
+.lb-container{padding:24px;max-width:700px;margin:0 auto;}
+.lb-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.lb-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.lb-title{font-weight:800;font-size:1rem;}
+.lb-row{display:flex;align-items:center;gap:14px;padding:12px 20px;border-bottom:1px solid var(--border);transition:background 0.2s;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:var(--surface2);}
+.lb-row.me{background:rgba(124,58,237,0.08);border-left:3px solid var(--accent);}
+.lb-rank{font-size:1rem;width:28px;text-align:center;font-family:'JetBrains Mono';}
+.lb-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;color:#fff;flex-shrink:0;}
+.lb-name{flex:1;font-weight:600;font-size:0.88rem;}
+.lb-xp{font-family:'JetBrains Mono';font-size:0.8rem;color:var(--accent2);}
+.lb-streak{font-family:'JetBrains Mono';font-size:0.78rem;color:var(--warning);}
+.streak-widget{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;}
+.streak-title{font-weight:700;margin-bottom:12px;font-size:0.9rem;}
+.streak-days{display:flex;gap:6px;flex-wrap:wrap;}
+.streak-day{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-family:'JetBrains Mono';color:var(--muted);}
+.streak-day.done{background:rgba(251,191,36,0.15);border-color:var(--warning);color:var(--warning);}
+.streak-day.today{background:var(--warning);color:#000;font-weight:700;}
+
+/* CERTIFICATE */
+.cert-container{padding:24px;max-width:800px;margin:0 auto;}
+.cert-preview{background:linear-gradient(135deg,#0a0a1a,#1a0a2e);border:2px solid var(--accent);border-radius:16px;padding:48px;text-align:center;position:relative;overflow:hidden;margin-bottom:20px;}
+.cert-preview::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(124,58,237,0.15),transparent 70%);pointer-events:none;}
+.cert-badge{font-size:3rem;margin-bottom:16px;}
+.cert-label{font-size:0.7rem;font-family:'JetBrains Mono';color:var(--muted);letter-spacing:2px;margin-bottom:8px;}
+.cert-title{font-size:1.8rem;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;}
+.cert-name{font-size:2.2rem;font-weight:800;color:var(--accent2);margin-bottom:12px;}
+.cert-desc{font-size:0.85rem;color:var(--muted);line-height:1.6;max-width:480px;margin:0 auto 20px;}
+.cert-meta{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;}
+.cert-meta-item{text-align:center;}
+.cert-meta-item .val{font-size:1.1rem;font-weight:800;color:var(--accent);}
+.cert-meta-item .key{font-size:0.65rem;font-family:'JetBrains Mono';color:var(--muted);margin-top:2px;}
+.cert-progress-bar{background:var(--border);border-radius:4px;height:6px;margin:16px 0 8px;}
+.cert-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width 0.8s;}
+.cert-progress-label{font-size:0.75rem;color:var(--muted);margin-bottom:20px;}
+.cert-locked{opacity:0.5;}
+.cert-unlock-hint{font-size:0.8rem;color:var(--warning);margin-top:12px;}
+
+/* MOBILE NAV */
+.mobile-menu-btn{display:none;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px;cursor:pointer;font-size:1.1rem;}
+.mobile-nav-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:300;}
+.mobile-nav-menu{position:fixed;top:0;left:0;width:240px;height:100%;background:var(--surface);border-right:1px solid var(--border);z-index:301;padding:20px;transform:translateX(-100%);transition:transform 0.3s;}
+.mobile-nav-menu.open{transform:none;}
+.mobile-nav-menu .nav-tab{display:block;width:100%;text-align:left;margin-bottom:6px;padding:10px 14px;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* FOOTER */
+footer{text-align:center;padding:24px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono';}
+footer span{color:var(--accent2);}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<div class="mobile-nav-menu" id="mobileNavMenu">
+  <div style="font-weight:800;margin-bottom:16px;font-size:1.1rem;">Ad<span style="color:var(--accent)">Pulse</span></div>
+  <button class="nav-tab" onclick="showPage('home');closeMobileNav()">🏠 Home</button>
+  <button class="nav-tab" onclick="showPage('learn');closeMobileNav()">📚 Learn</button>
+  <button class="nav-tab" onclick="showPage('tasks');closeMobileNav()">✅ Tasks</button>
+  <button class="nav-tab" onclick="showPage('shortcuts');closeMobileNav()">⌨️ Shortcuts</button>
+  <button class="nav-tab" onclick="showPage('quiz');closeMobileNav()">🧠 Quiz</button>
+  <button class="nav-tab" onclick="showPage('glossary');closeMobileNav()">📖 Glossary</button>
+  <button class="nav-tab" onclick="showPage('leaderboard');closeMobileNav()">🏆 Leaderboard</button>
+  <button class="nav-tab" onclick="showPage('certificate');closeMobileNav()">🎓 Certificate</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Ad<span>Pulse</span><sub>by Srijana M R</sub></div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab" onclick="showPage('learn')">Learn</button>
+    <button class="nav-tab" onclick="showPage('tasks')">Tasks</button>
+    <button class="nav-tab" onclick="showPage('shortcuts')">Shortcuts</button>
+    <button class="nav-tab" onclick="showPage('quiz')">Quiz</button>
+    <button class="nav-tab" onclick="showPage('glossary')">Glossary</button>
+    <button class="nav-tab" onclick="showPage('leaderboard')">🏆 Board</button>
+    <button class="nav-tab" onclick="showPage('certificate')">🎓 Cert</button>
+  </div>
+  <div class="nav-right">
+    <div class="streak-badge" id="streakBadge">🔥 0d</div>
+    <div class="xp-badge" id="xpBadge">⚡ 0 XP</div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
+    <button class="mobile-menu-btn" onclick="openMobileNav()">☰</button>
+  </div>
+</nav>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">PERFORMANCE MARKETING TRAINER</div>
+      <div class="hero-title">Master <span class="grad">Meta & Google<br>Ads</span> by Doing</div>
+      <p class="hero-sub">Structured lessons, practical tasks, quizzes and shortcuts to build real performance marketing skills — tracking, bidding, attribution, audience strategy and more.</p>
+      <div class="hero-creator">Created by <span>Srijana M R</span> · AdPulse v2.0</div>
+      <div class="hero-cta">
+        <button class="btn btn-primary" onclick="showPage('learn')">Start Learning →</button>
+        <button class="btn btn-outline" onclick="showPage('tasks')">Practice Tasks</button>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="num">14</div><div class="lbl">MODULES</div></div>
+      <div class="stat-card"><div class="num">25+</div><div class="lbl">TASKS</div></div>
+      <div class="stat-card"><div class="num">40+</div><div class="lbl">SHORTCUTS</div></div>
+      <div class="stat-card"><div class="num">50+</div><div class="lbl">QUIZ QUESTIONS</div></div>
+    </div>
+  </div>
+
+  <div class="progress-overview" id="progressOverview"></div>
+
+  <div class="section-header"><div class="section-title">All Modules</div><div class="section-sub">Click any module to start learning</div></div>
+  <div class="modules-grid" id="modulesGrid"></div>
+</div>
+
+<!-- ═══ LEARN ═══ -->
+<div id="page-learn" class="page">
+  <div class="learn-layout">
+    <div class="sidebar" id="sidebarEl"></div>
+    <div class="content-area" id="lessonContent"></div>
+  </div>
+</div>
+
+<!-- ═══ TASKS ═══ -->
+<div id="page-tasks" class="page">
+  <div class="tasks-container">
+    <div class="section-header" style="padding:0 0 14px"><div class="section-title">Practical Tasks</div><div class="section-sub">Complete tasks to earn XP and build real skills</div></div>
+    <div class="task-filters" id="taskFilters"></div>
+    <div id="tasksList"></div>
+  </div>
+</div>
+
+<!-- ═══ SHORTCUTS ═══ -->
+<div id="page-shortcuts" class="page">
+  <div class="shortcuts-container">
+    <div class="section-header" style="padding:0 0 14px"><div class="section-title">Platform Shortcuts</div><div class="section-sub">Speed up your workflow in Meta Ads Manager & Google Ads</div></div>
+    <div class="shortcuts-tabs">
+      <button class="sh-tab meta active" onclick="showShortcuts('meta',this)">Meta Ads Manager</button>
+      <button class="sh-tab google" onclick="showShortcuts('google',this)">Google Ads</button>
+    </div>
+    <div class="shortcuts-grid" id="shortcutsGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ QUIZ ═══ -->
+<div id="page-quiz" class="page">
+  <div class="quiz-container">
+    <div class="section-header" style="padding:0 0 20px"><div class="section-title">Knowledge Quiz</div><div class="section-sub">Earn XP for correct answers · builds your streak</div></div>
+    <div class="quiz-card" id="quizCard"></div>
+  </div>
+</div>
+
+<!-- ═══ GLOSSARY ═══ -->
+<div id="page-glossary" class="page">
+  <div class="glossary-container">
+    <div class="section-header" style="padding:0 0 14px"><div class="section-title">Marketing Glossary</div><div class="section-sub">25+ key terms for performance marketers</div></div>
+    <input class="glossary-search" placeholder="Search terms..." oninput="filterGlossary(this.value)"/>
+    <div id="glossaryList"></div>
+  </div>
+</div>
+
+<!-- ═══ LEADERBOARD ═══ -->
+<div id="page-leaderboard" class="page">
+  <div class="lb-container">
+    <div class="section-header" style="padding:0 0 14px"><div class="section-title">Leaderboard & Streak</div><div class="section-sub">Your progress vs top performers</div></div>
+    <div class="streak-widget">
+      <div class="streak-title">🔥 Your 7-Day Streak</div>
+      <div class="streak-days" id="streakDays"></div>
+    </div>
+    <div class="lb-card" id="leaderboardCard"></div>
+  </div>
+</div>
+
+<!-- ═══ CERTIFICATE ═══ -->
+<div id="page-certificate" class="page">
+  <div class="cert-container">
+    <div class="section-header" style="padding:0 0 14px"><div class="section-title">Certificate of Completion</div><div class="section-sub">Complete all modules and tasks to unlock your certificate</div></div>
+    <div id="certContent"></div>
+  </div>
+</div>
+
+<footer>AdPulse · Built by <span>Srijana M R</span> · Performance Marketing Trainer · 2025</footer>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let xp = parseInt(localStorage.getItem('adpulse_xp') || '0');
+let completedTasks = new Set(JSON.parse(localStorage.getItem('adpulse_tasks') || '[]'));
+let completedLessons = new Set(JSON.parse(localStorage.getItem('adpulse_lessons') || '[]'));
+let streak = parseInt(localStorage.getItem('adpulse_streak') || '0');
+let lastVisit = localStorage.getItem('adpulse_lastvisit');
+let currentLesson = 'pixel';
+let currentQ = 0, quizScore = 0, quizAnswered = false;
+let shuffledQ = [];
+let isDark = true;
+
+function save() {
+  localStorage.setItem('adpulse_xp', xp);
+  localStorage.setItem('adpulse_tasks', JSON.stringify([...completedTasks]));
+  localStorage.setItem('adpulse_lessons', JSON.stringify([...completedLessons]));
+  localStorage.setItem('adpulse_streak', streak);
+  document.getElementById('xpBadge').textContent = '⚡ ' + xp + ' XP';
+  document.getElementById('streakBadge').textContent = '🔥 ' + streak + 'd';
+}
+
+// Streak logic
+function updateStreak() {
+  const today = new Date().toDateString();
+  if (lastVisit !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (lastVisit === yesterday) { streak++; }
+    else if (!lastVisit) { streak = 1; }
+    else { streak = 1; }
+    localStorage.setItem('adpulse_lastvisit', today);
+    save();
+  }
+}
+updateStreak();
+
+// ══════════════════════════════════════════
+// MODULES DATA
+// ══════════════════════════════════════════
+const modulesData = [
+  { id:'pixel', platform:'meta', title:'Pixel & Conversion Tracking', desc:'Meta Pixel setup, custom events, AEM, deduplication and event quality.', diff:'easy', tasks:4 },
+  { id:'gtag', platform:'google', title:'Google Tag & GA4 Setup', desc:'GTM, GA4 Key Events, Enhanced Conversions, linking to Google Ads.', diff:'medium', tasks:4 },
+  { id:'bidding', platform:'meta', title:'Meta Bidding Strategies', desc:'Lowest cost, cost cap, bid cap, ROAS targets and scaling rules.', diff:'medium', tasks:3 },
+  { id:'smart', platform:'google', title:'Smart Bidding & PMax', desc:'tCPA, tROAS, Maximize Conversions, PMax asset groups and signals.', diff:'hard', tasks:3 },
+  { id:'attribution', platform:'mixed', title:'Attribution & Measurement', desc:'Multi-touch models, incrementality tests, MMM basics, platform reconciliation.', diff:'hard', tasks:2 },
+  { id:'audience', platform:'mixed', title:'Audience Strategy', desc:'Custom audiences, lookalikes, RLSA, Customer Match, exclusions.', diff:'medium', tasks:2 },
+  { id:'creative', platform:'meta', title:'Creative Testing (A/B)', desc:'Structured creative testing, DCO, statistical significance, creative fatigue signals.', diff:'medium', tasks:2 },
+  { id:'retargeting', platform:'mixed', title:'Retargeting Funnels', desc:'Full-funnel retargeting sequences, exclusions, frequency management and BOFU strategy.', diff:'medium', tasks:2 },
+  { id:'landingpage', platform:'mixed', title:'Landing Page Optimization', desc:'CRO principles, page speed, above-the-fold strategy, A/B testing landing pages.', diff:'medium', tasks:2 },
+  { id:'whatsapp', platform:'meta', title:'WhatsApp & Lead Gen Ads', desc:'Lead Gen forms, WhatsApp Click-to-Chat ads, CRM integration, lead quality optimization.', diff:'easy', tasks:2 },
+  { id:'ecommerce', platform:'meta', title:'eCommerce & Catalogue Ads', desc:'Advantage+ Shopping, catalogue setup, dynamic ads, product sets and ROAS scaling.', diff:'hard', tasks:2 },
+  { id:'attrmodel', platform:'mixed', title:'Attribution Models Deep Dive', desc:'Last-click vs data-driven vs first-click, view-through, cross-channel attribution logic.', diff:'hard', tasks:2 },
+  { id:'searchstructure', platform:'google', title:'Search Campaign Structure', desc:'Account structure best practices, campaign hierarchy, ad group themes, quality score impact.', diff:'medium', tasks:2 },
+  { id:'matchtypes', platform:'google', title:'Match Types & Search Strategy', desc:'Broad, phrase, exact match, BMM evolution, keyword strategy and search intent alignment.', diff:'medium', tasks:2 },
+];
+
+const diffMap = { easy:['easy','easy',''], medium:['medium','medium',''], hard:['hard','hard','hard'] };
+
+function renderModulesGrid() {
+  const total = modulesData.length;
+  const done = [...completedLessons].length;
+  document.getElementById('progressOverview').innerHTML = `
+    <div class="po-title"><span>Your Learning Progress</span><span style="font-family:'JetBrains Mono';font-size:0.72rem;color:var(--accent2)">${done}/${total} modules</span></div>
+    <div class="po-grid">${modulesData.map(m => {
+      const pct = completedLessons.has(m.id) ? 100 : 0;
+      return `<div class="po-item"><div class="po-name">${m.title}</div><div class="po-bar"><div class="po-fill" style="width:${pct}%"></div></div><div class="po-pct">${pct}%</div></div>`;
+    }).join('')}</div>`;
+
+  document.getElementById('modulesGrid').innerHTML = modulesData.map(m => {
+    const d = diffMap[m.diff];
+    const done = completedLessons.has(m.id);
+    return `<div class="module-card ${m.platform}" onclick="openLesson('${m.id}')">
+      ${done ? '<div class="module-complete-badge">✓ DONE</div>' : ''}
+      <div class="module-top">
+        <span class="platform-badge ${m.platform}">${m.platform === 'mixed' ? 'META + GOOGLE' : m.platform.toUpperCase()}</span>
+        <div class="diff-dots">${d.map((x,i) => `<div class="dot ${x?'filled '+m.diff:''}"></div>`).join('')}</div>
+      </div>
+      <div class="module-title">${m.title}</div>
+      <div class="module-desc">${m.desc}</div>
+      <div class="module-footer"><span class="task-count">${m.tasks} tasks</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${done?100:0}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════
+function renderSidebar() {
+  const groups = [
+    { label:'META ADS', color:'#4fa3ff', ids:['pixel','bidding','creative','whatsapp','ecommerce'] },
+    { label:'GOOGLE ADS', color:'#ff7b72', ids:['gtag','smart','searchstructure','matchtypes'] },
+    { label:'ADVANCED', color:'#a78bfa', ids:['attribution','audience','retargeting','landingpage','attrmodel'] },
+  ];
+  document.getElementById('sidebarEl').innerHTML = groups.map(g => `
+    <div class="sidebar-group">
+      <div class="sidebar-group-label">${g.label}</div>
+      ${g.ids.map(id => {
+        const m = modulesData.find(x=>x.id===id);
+        const done = completedLessons.has(id);
+        return `<div class="sidebar-item ${id===currentLesson?'active':''}" onclick="loadLesson('${id}')">
+          <div class="sidebar-dot" style="background:${g.color}"></div>
+          <span>${m.title}</span>
+          ${done ? '<span class="sidebar-check">✓</span>' : ''}
+        </div>`;
+      }).join('')}
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════
+// LESSONS CONTENT
+// ══════════════════════════════════════════
+const lessonsContent = {
+  pixel: { platform:'META ADS', title:'Pixel & Conversion Tracking', body:`
+    <h3>What is the Meta Pixel?</h3>
+    <p>The Meta Pixel is a JavaScript snippet on your website that fires events to Meta's servers when visitors take actions — page views, add to cart, purchases. It's the foundation of Meta performance marketing.</p>
+    <div class="tip-box"><strong>💡 Pro Tip:</strong> Always verify your Pixel using the Meta Pixel Helper Chrome extension before launching campaigns.</div>
+    <h3>Standard vs Custom Events</h3>
+    <p><strong>Standard Events</strong>: ViewContent, AddToCart, Purchase, Lead, CompleteRegistration. Using standard events gives Meta's algorithm richer optimization signals.</p>
+    <p><strong>Custom Events</strong>: Created by you for actions not covered by standard events — e.g., "VideoPlayed50%" or "ChatbotOpened".</p>
+    <div class="code-block">fbq('track', 'Purchase', {
+  value: 99.99, currency: 'INR',
+  content_ids: ['SKU123'], content_type: 'product'
+});</div>
+    <h3>Aggregated Event Measurement (AEM)</h3>
+    <p>Post-iOS 14, you must prioritize up to 8 events per domain in Events Manager. Your highest-priority event (e.g., Purchase) receives the most accurate data. Always verify your domain first.</p>
+    <h3>Event Deduplication</h3>
+    <p>If using both Pixel and CAPI, match <strong>event_id</strong> across both sources to prevent double-counting conversions.</p>
+    <div class="code-block">// Browser (Pixel)
+fbq('track', 'Purchase', {value: 99}, {eventID: 'order_12345'});
+// Server (CAPI) — same eventID
+POST /v17.0/&lt;pixel_id&gt;/events { "event_id": "order_12345" }</div>
+    <div class="warn-box"><strong>⚠️ Common Mistake:</strong> Not verifying your domain before AEM setup causes event prioritization to fail silently.</div>` },
+
+  gtag: { platform:'GOOGLE ADS', title:'Google Tag & GA4 Setup', body:`
+    <h3>GTM vs gtag.js</h3>
+    <p>GTM manages all tracking tags without code deployments. gtag.js is the direct method. Use GTM for flexibility — add new tags (Meta Pixel, heatmaps) without developer help.</p>
+    <h3>GA4 Key Events</h3>
+    <p>In GA4, any event can be marked as a "Key Event" in Admin → Events. When linked to Google Ads and imported as conversions, these become your Smart Bidding signals.</p>
+    <div class="code-block">// GTM GA4 Event Tag config
+Event Name: purchase
+Parameters:
+  transaction_id: {{DL - transaction_id}}
+  value: {{DL - revenue}}
+  currency: INR</div>
+    <h3>Enhanced Conversions</h3>
+    <p>Sends hashed first-party customer data (email, phone) server-side to Google. Improves conversion measurement accuracy by 5–10%. Always SHA-256 hash PII before sending.</p>
+    <div class="tip-box"><strong>💡 Tip:</strong> Link GA4 → Google Ads in GA4 Admin → Google Ads Links. Then import Key Events in Google Ads → Tools → Conversions.</div>` },
+
+  bidding: { platform:'META ADS', title:'Meta Bidding Strategies', body:`
+    <h3>Highest Volume (Default)</h3>
+    <p>Meta spends your full budget for maximum results. No cost control — ideal for testing and the learning phase. Maximum algorithm flexibility.</p>
+    <h3>Cost Cap</h3>
+    <p>Set your average target CPA. Meta tries to stay at or below that cost. Best used with historical data.</p>
+    <div class="tip-box"><strong>💡 Rule of Thumb:</strong> Set cost cap at 1.2–1.5× your actual target CPA to give the algorithm room to optimize.</div>
+    <h3>Bid Cap</h3>
+    <p>Hard ceiling on every auction bid. Very restrictive, often causes under-delivery. Use only with strict margin requirements.</p>
+    <h3>Minimum ROAS</h3>
+    <p>For eCommerce value-based optimization. Meta only spends when predicted return exceeds your minimum ROAS. High targets severely limit delivery.</p>
+    <div class="warn-box"><strong>⚠️ Scaling Warning:</strong> Never increase budgets more than 20–30% every 3–5 days. Larger increases reset the learning phase.</div>` },
+
+  smart: { platform:'GOOGLE ADS', title:'Smart Bidding & PMax', body:`
+    <h3>tCPA</h3>
+    <p>Google targets your desired CPA across all conversions. Set based on 30-day historical average CPA. Too aggressive = underdelivery; too lenient = wasted spend.</p>
+    <h3>tROAS</h3>
+    <p>Value-based bidding for eCommerce. Expressed as %. 400% tROAS = ₹4 revenue per ₹1 spend. Requires accurate conversion values.</p>
+    <div class="tip-box"><strong>💡 Tip:</strong> Use Seasonality Adjustments during sale periods (Diwali, etc.) to signal higher expected CVRs to the algorithm.</div>
+    <h3>Performance Max (PMax)</h3>
+    <p>Runs across all Google inventory from a single campaign. Success depends on quality Asset Groups and Audience Signals.</p>
+    <div class="code-block">PMax Asset Group Checklist:
+✓ 15 images (landscape + square + portrait)
+✓ 5 logos · 5 short headlines (30 chars)
+✓ 5 long headlines (90 chars) · 5 descriptions
+✓ 5 videos (don't let Google auto-generate!)
+✓ Audience Signals (Customer lists, In-market)</div>
+    <div class="warn-box"><strong>⚠️ PMax cannibalizes branded search.</strong> Always run a separate branded Search campaign and use brand exclusions in PMax.</div>` },
+
+  attribution: { platform:'META + GOOGLE', title:'Attribution & Measurement', body:`
+    <h3>The Attribution Problem</h3>
+    <p>Every platform claims credit for conversions. Relying on platform-reported ROAS leads to massive double-counting and bad budget decisions.</p>
+    <h3>Attribution Windows</h3>
+    <p>Meta default: 7-day click, 1-day view. Google: 30-day click, 1-day view. Align windows to your sales cycle.</p>
+    <h3>Data-Driven Attribution (DDA)</h3>
+    <p>ML distributes credit across all touchpoints based on actual contribution. Requires minimum conversion volume to activate. Now the default for both platforms.</p>
+    <h3>Incrementality Testing</h3>
+    <p>A holdout test where the control group sees no ads. The conversion rate difference = incremental lift = true ad contribution. Meta offers Conversion Lift Studies.</p>
+    <div class="warn-box"><strong>⚠️ Reality Check:</strong> Platform-reported ROAS is typically 30–50% higher than true incremental ROAS. Run incrementality tests quarterly.</div>` },
+
+  audience: { platform:'META + GOOGLE', title:'Audience Strategy', body:`
+    <h3>Meta Audience Types</h3>
+    <p><strong>Core:</strong> Demographic + interest targeting. Broad targeting increasingly recommended as Meta's algorithm has improved at finding buyers within broad parameters.</p>
+    <p><strong>Custom:</strong> Website visitors (Pixel), CRM lists, video engagers, lead form openers.</p>
+    <p><strong>Lookalike:</strong> 1% LAL = most similar (smallest). 1–3% from purchasers performs best for mature accounts.</p>
+    <div class="tip-box"><strong>💡 2024 Strategy:</strong> Use Advantage+ Audience with soft suggestions for TOF campaigns — let the algorithm find buyers.</div>
+    <h3>Google Audiences</h3>
+    <p><strong>RLSA:</strong> Bid more on searches from past site visitors. Cart abandoner searching for your category deserves +50% bid.</p>
+    <div class="code-block">RLSA Strategy:
+All visitors (30d): +20% bid
+Cart abandoners (7d): +50% bid
+Purchasers (120d): Exclude or separate campaign</div>` },
+
+  creative: { platform:'META ADS', title:'Creative Testing (A/B)', body:`
+    <h3>Why Creative is the #1 Lever on Meta</h3>
+    <p>With broad targeting and algorithm-driven delivery, creative is the primary differentiator. Your ad is your targeting — the right creative finds the right audience.</p>
+    <h3>Structured Creative Testing</h3>
+    <p>Test one variable at a time: hook vs hook, format vs format, CTA vs CTA. Use Meta's A/B test feature at the campaign level for statistically valid results.</p>
+    <div class="tip-box"><strong>💡 Testing Framework:</strong> Run tests for at least 7 days with equal budgets. Need minimum 100 conversions per variant for significance.</div>
+    <h3>DCO — Dynamic Creative Optimization</h3>
+    <p>Upload multiple headlines, images, and CTAs. Meta automatically finds the best combinations per audience segment. Great for scaling winners across audience variations.</p>
+    <h3>Creative Fatigue Signals</h3>
+    <p>Watch for: Rising frequency (>3.5 in 7 days), declining CTR week-over-week, rising CPM, declining conversion rate. Any two together = refresh your creative immediately.</p>
+    <div class="code-block">Creative Test Matrix:
+Variant A: UGC video (testimonial hook)
+Variant B: Product demo video (problem-solution)
+Variant C: Static image + bold text overlay
+Winner: Lowest CPA with >95% stat significance</div>
+    <div class="warn-box"><strong>⚠️ Never pause a winning ad set to add creative.</strong> Duplicate the ad set, add new creative, and let the new one ramp up before pausing the old one.</div>` },
+
+  retargeting: { platform:'META + GOOGLE', title:'Retargeting Funnels', body:`
+    <h3>The Retargeting Funnel Framework</h3>
+    <p>Don't show the same ad to everyone who visited your site. Segment by intent level and serve relevant messages at each stage.</p>
+    <div class="code-block">TOFU Retargeting (Low Intent):
+→ Video viewers (50%+), IG/FB page engagers
+→ Message: Brand story, social proof, education
+
+MOFU Retargeting (Medium Intent):
+→ Website visitors (30d), blog readers
+→ Message: USP comparison, testimonials, offers
+
+BOFU Retargeting (High Intent):
+→ Product viewers (7d), cart abandoners (3d)
+→ Message: Direct CTA, urgency, discount, free shipping</div>
+    <h3>Frequency Management</h3>
+    <p>Cap retargeting frequency at 2–3 per week per user. High-frequency retargeting annoys users and increases CPMs without improving conversions.</p>
+    <div class="tip-box"><strong>💡 Exclusion Strategy:</strong> Always exclude purchasers from all retargeting ad sets. Showing purchase ads to existing customers wastes budget and damages brand trust.</div>
+    <h3>Google Display Retargeting</h3>
+    <p>Use Smart Display campaigns for retargeting with responsive ads. Segment by recency: 1–3 day window (highest intent), 4–14 days (medium), 15–30 days (broad). Set different bids per segment.</p>` },
+
+  landingpage: { platform:'META + GOOGLE', title:'Landing Page Optimization', body:`
+    <h3>The Ad-to-Landing Page Match</h3>
+    <p>Message match is critical. If your ad says "50% off running shoes," your landing page headline must say the same. Disconnect here kills conversion rate regardless of ad quality.</p>
+    <h3>Above-the-Fold Essentials</h3>
+    <p>Users decide in 3 seconds whether to stay. Your above-the-fold section needs: a clear headline (what + for whom), sub-headline (key benefit), primary CTA button, and a trust signal (rating, reviews count).</p>
+    <div class="tip-box"><strong>💡 Page Speed:</strong> LCP (Largest Contentful Paint) under 2.5 seconds is critical for both Google Quality Score and conversion rate. Use Google PageSpeed Insights weekly.</div>
+    <h3>CRO Testing Priorities</h3>
+    <div class="code-block">High Impact Tests (run first):
+1. Headline — problem-focused vs benefit-focused
+2. CTA button text — "Get Started" vs "Start Free Trial"
+3. Hero image — product shot vs lifestyle vs video
+4. Form length — 3 fields vs 6 fields (lead gen)
+5. Social proof placement — above vs below fold</div>
+    <h3>Landing Page vs Website</h3>
+    <p>Always send paid traffic to dedicated landing pages, not your homepage. LPs with single CTAs convert 3–5× better than homepages because they eliminate navigation distractions.</p>
+    <div class="warn-box"><strong>⚠️ Common Mistake:</strong> Running A/B tests without enough traffic. You need minimum 1,000 visitors per variant before declaring a winner. Use a significance calculator.</div>` },
+
+  whatsapp: { platform:'META ADS', title:'WhatsApp & Lead Gen Ads', body:`
+    <h3>Instant Form (Lead Gen) Ads</h3>
+    <p>Meta Instant Forms capture leads without users leaving the platform. Pre-filled with Facebook profile data, reducing friction. Best for high-volume lead gen in real estate, education, finance.</p>
+    <div class="tip-box"><strong>💡 Form Design:</strong> Keep forms to 3–5 fields max. Every additional field reduces completion rate by ~10%. Ask only what you need immediately.</div>
+    <h3>Lead Quality Optimization</h3>
+    <p>Add a "Higher Intent" form setting which requires users to review and confirm their information. Reduces volume but increases quality by filtering casual clickers.</p>
+    <div class="code-block">Lead Quality Checklist:
+✓ Custom disclaimer with specific expectations
+✓ "Higher intent" form toggle enabled
+✓ Custom questions (1–2) to qualify intent
+✓ Confirmation screen with next steps
+✓ CRM integration via Zapier or native API</div>
+    <h3>Click-to-WhatsApp Ads</h3>
+    <p>Ad clicks open a WhatsApp chat with your business. Great for markets where WhatsApp penetration is high (India, SEA, LATAM). Use greeting message templates to auto-qualify leads.</p>
+    <div class="warn-box"><strong>⚠️ Response Time:</strong> Lead intent decays fast. Aim to respond to WhatsApp leads within 5 minutes. A 1-hour delay reduces conversion rate by up to 80%.</div>` },
+
+  ecommerce: { platform:'META ADS', title:'eCommerce & Catalogue Ads', body:`
+    <h3>Meta Catalogue Setup</h3>
+    <p>A catalogue is a structured product feed uploaded to Meta's Commerce Manager. It powers dynamic ads that show users the exact products they viewed, added to cart, or that match their interests.</p>
+    <div class="code-block">Required Catalogue Fields:
+id, title, description, availability,
+condition, price, link, image_link, brand</div>
+    <h3>Advantage+ Shopping Campaigns (ASC)</h3>
+    <p>Meta's equivalent of Google PMax. Combines prospecting and retargeting into one campaign. Set an "existing customer budget cap" to control how much goes to retargeting vs prospecting.</p>
+    <div class="tip-box"><strong>💡 ASC Best Practice:</strong> Start with 70% new customer / 30% existing customer budget split. Adjust based on your LTV and acquisition cost targets.</div>
+    <h3>Dynamic Product Ads (DPA)</h3>
+    <p>Automatically show relevant products from your catalogue to people who viewed or added them. Set up retargeting DPAs for: product viewers (7d), cart abandoners (3d), and cross-sell to purchasers (30d).</p>
+    <h3>Product Sets</h3>
+    <p>Segment your catalogue into product sets by category, price range, margin, or bestsellers. Create separate ad sets per product set to control budget allocation and creative messaging per product group.</p>
+    <div class="warn-box"><strong>⚠️ Feed Quality:</strong> Poor catalogue data (missing images, wrong prices, out-of-stock items) directly hurts dynamic ad performance. Audit your feed weekly.</div>` },
+
+  attrmodel: { platform:'META + GOOGLE', title:'Attribution Models Deep Dive', body:`
+    <h3>The 6 Attribution Models</h3>
+    <div class="code-block">Last Click:    100% credit to final touchpoint
+First Click:   100% credit to first touchpoint
+Linear:        Equal credit across all touchpoints
+Time Decay:    More credit to recent touchpoints
+Position-Based:40% first + 40% last + 20% middle
+Data-Driven:   ML-based, varies per conversion path</div>
+    <h3>Which Model to Use?</h3>
+    <p><strong>Data-Driven Attribution</strong> is now the default and recommended for most accounts. It uses Google's ML to assign credit based on the actual contribution of each touchpoint. Requires minimum 300 conversions/month to activate.</p>
+    <p><strong>Last Click</strong> still makes sense for: direct response campaigns where the final click drives clear action, or when you have very short conversion paths (same session).</p>
+    <div class="tip-box"><strong>💡 Cross-Channel Attribution:</strong> Neither Meta nor Google can see each other's touchpoints. For true multi-channel attribution, use tools like Northbeam, Triple Whale, or Rockerbox.</div>
+    <h3>View-Through Attribution</h3>
+    <p>Credits a conversion to an ad that was seen but not clicked. Meta's default includes 1-day view-through. This inflates reported conversions significantly — especially for video ads shown to broad audiences.</p>
+    <div class="warn-box"><strong>⚠️ Remove view-through attribution</strong> from reporting when evaluating true performance. Use click-only windows for more conservative, reliable numbers.</div>` },
+
+  searchstructure: { platform:'GOOGLE ADS', title:'Search Campaign Structure', body:`
+    <h3>The Ideal Account Hierarchy</h3>
+    <div class="code-block">Account
+└── Campaign (Budget + Geo + Bid Strategy)
+    └── Ad Group (Keyword Theme)
+        └── Keywords (3–10 per ad group)
+        └── Responsive Search Ads (3 per ad group)
+        └── Ad Extensions (Sitelinks, Callouts, etc.)</div>
+    <h3>Campaign Segmentation Principles</h3>
+    <p>Segment campaigns by: <strong>Budget isolation</strong> (branded vs non-branded), <strong>Geography</strong> (different bids per city/region), <strong>Match type</strong> (some prefer separate exact/broad campaigns), <strong>Product category</strong> (different margins = different target CPA).</p>
+    <div class="tip-box"><strong>💡 Branded Campaigns:</strong> Always run separate branded keyword campaigns. They have highest Quality Scores, lowest CPCs, and protect you from competitor bidding on your brand name.</div>
+    <h3>Ad Group Best Practices</h3>
+    <p>Each ad group should have a single, tight keyword theme (3–10 closely related keywords). Avoid keyword sprawl — mixing "running shoes" and "gym equipment" in one ad group kills ad relevance and Quality Score.</p>
+    <h3>Responsive Search Ads (RSA)</h3>
+    <p>Provide 15 headlines and 4 descriptions. Google tests combinations to find best-performing. Pin your most important message (brand name, key USP) to position 1. Use Ad Strength as a guide (aim for "Excellent").</p>
+    <div class="warn-box"><strong>⚠️ Ad Strength ≠ Performance.</strong> "Excellent" Ad Strength doesn't guarantee best results. Always judge by actual CPA and conversion rate, not Google's score.</div>` },
+
+  matchtypes: { platform:'GOOGLE ADS', title:'Match Types & Search Strategy', body:`
+    <h3>The Three Match Types</h3>
+    <div class="code-block">Broad Match:   running shoes
+→ Triggers: sneakers for jogging, athletic footwear,
+  marathon gear (very wide interpretation)
+
+Phrase Match:  "running shoes"
+→ Triggers: best running shoes, buy running shoes women
+  (query must contain meaning of phrase, in order)
+
+Exact Match:   [running shoes]
+→ Triggers: running shoes, running shoe (close variants only)</div>
+    <h3>Broad Match + Smart Bidding</h3>
+    <p>Google recommends Broad Match with Smart Bidding as it gives the algorithm maximum signal to find converting queries. This works well in accounts with strong conversion history (100+ conversions/month). Without good history, broad match wastes significant budget.</p>
+    <div class="tip-box"><strong>💡 2024 Strategy:</strong> Start with Exact + Phrase match while building conversion history. Introduce broad match once Smart Bidding has 30+ days of data and 50+ conversions.</div>
+    <h3>Search Intent Alignment</h3>
+    <div class="code-block">Informational intent: "how to choose running shoes"
+→ Content/blog page, not a product landing page
+
+Navigational intent: "Nike running shoes official site"
+→ Brand campaign, direct to brand page
+
+Transactional intent: "buy running shoes online India"
+→ Product landing page, Shopping ads, strong CTA</div>
+    <h3>The Match Type Funnel</h3>
+    <p>Use Exact Match for your highest-converting, highest-intent terms. Phrase Match for mid-funnel discovery. Broad Match (with Smart Bidding) for prospecting and expanding reach to new converting queries.</p>
+    <div class="warn-box"><strong>⚠️ Always pair Broad Match with extensive negative keyword lists.</strong> Without negatives, broad match will spend on completely irrelevant queries and destroy your CPA.</div>` },
+};
+
+// ══════════════════════════════════════════
+// YOUTUBE VIDEOS
+// ══════════════════════════════════════════
+const lessonVideos = {
+  pixel:         [{id:'jLvRFvnUMac',title:'Meta Pixel Setup Complete Guide 2024',channel:'Ben Heath',tag:'BEGINNER'},{id:'Ez_LkBrDhBg',title:'Meta Pixel & Events – Full Tutorial',channel:'Surfside PPC',tag:'SETUP'},{id:'D4NkKHAz5S4',title:'Facebook Pixel Explained in 8 Minutes',channel:'Adam Erhart',tag:'QUICK'}],
+  gtag:          [{id:'EKN4C8M6KSc',title:'Google Tag Manager Full Course 2024',channel:'Loves Data',tag:'FULL COURSE'},{id:'A59kkh1Glkg',title:'GA4 & Google Ads Conversion Tracking',channel:'Paid Media Pros',tag:'TRACKING'},{id:'Wr-RH4e_l8E',title:'Enhanced Conversions – Google Ads Tutorial',channel:'Surfside PPC',tag:'ADVANCED'}],
+  bidding:       [{id:'iXlSvPMtcTg',title:'Meta Ads Bidding Strategies Explained',channel:'Ben Heath',tag:'STRATEGY'},{id:'gA6nrJG6kBE',title:'How to Scale Facebook Ads Profitably',channel:'Paid Media Pros',tag:'SCALING'},{id:'0VcRDpFSPo8',title:'Meta Cost Cap vs Bid Cap vs Highest Volume',channel:'Andrew Foxwell',tag:'COMPARISON'}],
+  smart:         [{id:'jXZSHUPUMHs',title:'Google Ads Smart Bidding Strategies 2024',channel:'Paid Media Pros',tag:'SMART BIDDING'},{id:'Kd4WJ0R8e0c',title:'Performance Max Campaign Full Tutorial',channel:'Solutions 8',tag:'PMAX'},{id:'5VeRpv3kxgo',title:'tCPA vs tROAS – When to Use Each',channel:'Surfside PPC',tag:'BIDDING'}],
+  attribution:   [{id:'F7BPRB4TVQM',title:'Marketing Attribution Models Explained',channel:'Loves Data',tag:'ATTRIBUTION'},{id:'lMvPq2_r3pU',title:'Meta vs Google Attribution – Which to Trust?',channel:'Paid Media Pros',tag:'MEASUREMENT'},{id:'nPGBqnk2iFk',title:'Incrementality Testing – The Real ROAS',channel:'Andrew Foxwell',tag:'ADVANCED'}],
+  audience:      [{id:'FTs-A0NBRMU',title:'Meta Lookalike Audiences Full Guide',channel:'Ben Heath',tag:'AUDIENCES'},{id:'V7HXLkBIBxA',title:'Google Ads Audience Targeting – RLSA & More',channel:'Surfside PPC',tag:'RLSA'},{id:'OP-3gGy0e6M',title:'Customer Match & First-Party Data Strategy',channel:'Paid Media Pros',tag:'FIRST-PARTY'}],
+  creative:      [{id:'9bZkp7q19f0',title:'Facebook Ad Creative Testing Strategy',channel:'Ben Heath',tag:'CREATIVE'},{id:'tQ2oiMiJdaQ',title:'How to Test Facebook Ads Creative in 2024',channel:'Paid Media Pros',tag:'A/B TESTING'},{id:'X7uBPnm4eTg',title:'Dynamic Creative Optimization – Full Guide',channel:'Andrew Foxwell',tag:'DCO'}],
+  retargeting:   [{id:'IrqfXbaBMBE',title:'Facebook Retargeting Funnel Strategy 2024',channel:'Ben Heath',tag:'FUNNELS'},{id:'q_6Zi2EZKQY',title:'Google Display Retargeting Full Setup',channel:'Surfside PPC',tag:'GOOGLE'},{id:'Qy6PkxNxkes',title:'The Perfect Retargeting Ad Sequence',channel:'Paid Media Pros',tag:'SEQUENCE'}],
+  landingpage:   [{id:'jk2pShMbgvk',title:'Landing Page Optimization for Paid Ads',channel:'CXL Institute',tag:'CRO'},{id:'T_vPVWqSGDs',title:'High Converting Landing Page Elements',channel:'Neil Patel',tag:'DESIGN'},{id:'hFTFEEMF65A',title:'A/B Testing Landing Pages – Step by Step',channel:'Loves Data',tag:'TESTING'}],
+  whatsapp:      [{id:'JkDf2aXSoAI',title:'Meta Lead Gen Ads Full Setup 2024',channel:'Ben Heath',tag:'LEAD GEN'},{id:'vNrTJXMwKiE',title:'Click to WhatsApp Ads Tutorial',channel:'Paid Media Pros',tag:'WHATSAPP'},{id:'WBpBF8y1_Xo',title:'Instant Forms Best Practices for High Quality Leads',channel:'Andrew Foxwell',tag:'FORMS'}],
+  ecommerce:     [{id:'QK7SeFMvpGE',title:'Advantage+ Shopping Campaigns Full Guide',channel:'Ben Heath',tag:'ASC'},{id:'3RNijzMRKMo',title:'Meta Dynamic Product Ads Setup & Strategy',channel:'Paid Media Pros',tag:'DPA'},{id:'SZR9s8dOIXs',title:'Facebook Catalogue Ads for eCommerce',channel:'Surfside PPC',tag:'CATALOGUE'}],
+  attrmodel:     [{id:'F7BPRB4TVQM',title:'Attribution Models Compared – Which Wins?',channel:'Loves Data',tag:'MODELS'},{id:'nPGBqnk2iFk',title:'Cross-Channel Attribution Explained',channel:'Paid Media Pros',tag:'CROSS-CHANNEL'},{id:'2CvFI2GVpuA',title:'Data-Driven Attribution – How It Works',channel:'Google Ads',tag:'OFFICIAL'}],
+  searchstructure:[{id:'vFt3TiflJco',title:'Google Ads Account Structure Best Practices',channel:'Surfside PPC',tag:'STRUCTURE'},{id:'FXVPiC3VfWs',title:'How to Structure Google Search Campaigns',channel:'Paid Media Pros',tag:'CAMPAIGNS'},{id:'FkJdcFLeMnI',title:'RSA Best Practices – Google Ads',channel:'Google Ads',tag:'OFFICIAL'}],
+  matchtypes:    [{id:'EuvXdJiOcXE',title:'Keyword Match Types Explained 2024',channel:'Surfside PPC',tag:'MATCH TYPES'},{id:'7bMOFVHBP-o',title:'Broad Match vs Exact Match in 2024',channel:'Paid Media Pros',tag:'STRATEGY'},{id:'VxPVVJQoFVU',title:'Keyword Strategy for Google Search',channel:'Solutions 8',tag:'KEYWORDS'}],
+};
+
+function renderYT(lessonId) {
+  const vids = lessonVideos[lessonId] || [];
+  if (!vids.length) return '';
+  return `<div class="yt-section">
+    <div class="yt-section-title">Recommended Video Tutorials</div>
+    <div class="yt-grid">${vids.map(v => `
+      <div class="yt-card">
+        <div class="yt-embed-wrap" id="yt-${v.id}" onclick="loadYT('${v.id}')">
+          <img class="yt-thumbnail" src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}">
+          <div class="yt-play-btn"></div>
+        </div>
+        <div class="yt-info">
+          <div class="yt-video-title">${v.title}</div>
+          <div class="yt-channel">${v.channel}<span class="yt-tag">${v.tag}</span></div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+function loadYT(id) {
+  const w = document.getElementById('yt-'+id);
+  if(w) w.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+}
+
+// ══════════════════════════════════════════
+// LOAD LESSON
+// ══════════════════════════════════════════
+function loadLesson(id) {
+  currentLesson = id;
+  const l = lessonsContent[id];
+  if (!l) return;
+  renderSidebar();
+  document.getElementById('lessonContent').innerHTML = `
+    <div class="lesson-header">
+      <div class="lesson-platform">${l.platform}</div>
+      <div class="lesson-title">${l.title}</div>
+    </div>
+    <div class="lesson-body">${l.body}</div>
+    ${renderYT(id)}
+    <div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="lesson-mark-btn ${completedLessons.has(id)?'done':''}" onclick="markLesson('${id}',this)">
+        ${completedLessons.has(id)?'✓ Completed':'Mark as Complete'}
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="showPage('tasks')">Practice Tasks →</button>
+      <button class="btn btn-outline btn-sm" onclick="showPage('quiz')">Quiz →</button>
+    </div>`;
+}
+
+function markLesson(id, btn) {
+  if (completedLessons.has(id)) return;
+  completedLessons.add(id);
+  xp += 30;
+  save();
+  btn.textContent = '✓ Completed';
+  btn.classList.add('done');
+  renderSidebar();
+  renderModulesGrid();
+}
+
+function openLesson(id) { currentLesson = id; showPage('learn'); }
+
+// ══════════════════════════════════════════
+// TASKS
+// ══════════════════════════════════════════
+const tasks = [
+  {id:1,platform:'meta',category:'tracking',title:'Verify Pixel Installation',desc:'Use Meta Pixel Helper to audit an existing Pixel setup for errors and missing events.',steps:['Install "Meta Pixel Helper" Chrome extension','Navigate to a site with Meta Pixel installed','Open the extension: identify events, parameters, and errors','Document missing standard events or parameter issues','Check for deduplication issues if CAPI is also in use'],xp:50},
+  {id:2,platform:'meta',category:'tracking',title:'Set Up Conversion Event Prioritization',desc:'Configure AEM event priority in Meta Events Manager for iOS 14+ compliance.',steps:['Go to Meta Events Manager → Data Sources → your Pixel','Settings → Aggregated Event Measurement','Verify domain ownership is confirmed','Configure 8 events in priority order (Purchase first)','Document your reasoning for the priority order'],xp:75},
+  {id:3,platform:'google',category:'tracking',title:'Create a GTM Workspace',desc:'Set up a structured GTM workspace with organized folder structure.',steps:['Open GTM → Create Workspace named "Tracking Audit"','Audit existing tags — organize into folders: Google Ads, GA4, Meta, Other','For each tag, verify trigger conditions are correct','Check for tags firing too broadly or with no triggers','Create a testing checklist using GTM Preview mode'],xp:75},
+  {id:4,platform:'google',category:'bidding',title:'Analyze Smart Bidding Performance',desc:'Evaluate whether your tCPA or tROAS campaign is ready to scale.',steps:['Open a Search campaign using Smart Bidding in Google Ads','Check Recommendations → "Adjust your target CPA/ROAS"','Review last 30 days: Is actual CPA/ROAS within 15% of target?','Check if campaign has exited learning phase','Document 3 reasons it is/isn\'t ready to scale'],xp:60},
+  {id:5,platform:'google',category:'tracking',title:'Search Terms Negative Keyword Audit',desc:'Find and add irrelevant search terms as negative keywords weekly.',steps:['Go to Keywords → Search Terms in a Search campaign','Set date range to last 30 days, sort by Cost descending','Identify all queries with ≥1 click that are irrelevant','Add as negatives at ad group or campaign level','Create a shared negative keyword list for recurring terms'],xp:80},
+  {id:6,platform:'meta',category:'audience',title:'Build a Lookalike Audience Stack',desc:'Create a tiered LAL audience strategy from your purchaser list.',steps:['In Audiences, upload your customer purchase list (min. 1,000 emails)','Create LAL: 1%, 1–2%, 2–5% from the purchaser list','Create Website Visitor LAL (all visitors, last 180d) at 1% and 3%','Document estimated audience sizes for each tier','Design a campaign structure: separate ad sets per LAL tier'],xp:90},
+  {id:7,platform:'google',category:'audience',title:'Set Up RLSA Bid Adjustments',desc:'Layer remarketing audiences on Search campaigns for bid optimization.',steps:['Go to Audiences tab for a Search campaign','Add: Website Visitors (30d) — Observation mode','Add: Cart Abandoners (7d) — Observation mode','Set bid adjustment for All Visitors: +20%','Set bid adjustment for Cart Abandoners: +50%'],xp:85},
+  {id:8,platform:'meta',category:'bidding',title:'Launch a Cost Cap Campaign',desc:'Set up a Meta campaign with cost cap bidding based on historical CPA data.',steps:['Pull last 30-day average CPA from Meta Ads reporting','Calculate cost cap target (1.3× your target CPA)','Create a new campaign with Cost Cap bid strategy','Set ad set budget to at least 5–10× your cost cap','Monitor delivery for 48 hours — adjust if under-delivering'],xp:95},
+  {id:9,platform:'google',category:'tracking',title:'Enhanced Conversions Setup Audit',desc:'Verify or implement Enhanced Conversions for Google Ads.',steps:['Go to Google Ads → Tools → Conversions','Select primary conversion → check Enhanced Conversions status','If using GTM: verify conversion linker tag fires on all pages','Verify SHA-256 hashing of email/phone','Check Diagnostics tab for errors or data quality warnings'],xp:100},
+  {id:10,platform:'meta',category:'creative',title:'Run a Creative A/B Test',desc:'Set up a structured creative test to find your best-performing ad format.',steps:['In Ads Manager, create an A/B test at campaign level','Set variable to "Creative" — keep all other variables identical','Create Variant A: video ad with testimonial hook','Create Variant B: static image with bold text overlay','Run for 7 days with equal budgets, then analyze CPA difference'],xp:100},
+  {id:11,platform:'meta',category:'retargeting',title:'Build a 3-Stage Retargeting Sequence',desc:'Create a full TOFU → MOFU → BOFU retargeting funnel on Meta.',steps:['Create Custom Audience: IG/FB Engagers (90d) — TOFU','Create Custom Audience: Website Visitors (30d) — MOFU','Create Custom Audience: Cart Abandoners (7d) — BOFU','Create 3 separate ad sets with different messaging per stage','Exclude each higher-intent audience from lower-intent ad sets'],xp:110},
+  {id:12,platform:'mixed',category:'landingpage',title:'Audit Your Landing Page Speed',desc:'Run a full page speed audit and identify top 3 fixes.',steps:['Run your landing page URL through PageSpeed Insights (Google)','Note LCP, FID/INP, and CLS scores','Identify top 3 issues flagged in Opportunities section','Implement at least 1 fix (image compression, defer JS, etc.)','Re-run the test and document improvement in LCP'],xp:70},
+  {id:13,platform:'meta',category:'tracking',title:'Implement Event Deduplication',desc:'Ensure Pixel and CAPI events are properly deduplicated.',steps:['In Events Manager, check overview for duplicate event signals','Identify server-sent and browser Pixel events','Ensure both pass identical event_id values for same action','Use Meta Test Events tool to verify deduplication works','Check that duplicate rate is under 5% in Events Manager diagnostics'],xp:110},
+  {id:14,platform:'google',category:'bidding',title:'Build a Campaign Structure Plan',desc:'Design a Google Ads account structure for a sample business.',steps:['Choose a business type (e.g., online shoe store)','Map out 3 campaigns: Brand, Non-brand, Competitor','For each campaign, list 3–5 ad groups with keyword themes','Define match types for each ad group','List 10 negative keywords shared across all campaigns'],xp:90},
+];
+
+const taskCategories = ['all','meta','google','tracking','bidding','audience','creative','retargeting','landingpage'];
+
+function renderTaskFilters() {
+  document.getElementById('taskFilters').innerHTML = taskCategories.map((c,i) =>
+    `<button class="filter-btn ${i===0?'active':''}" onclick="filterTasks('${c}',this)">${c.charAt(0).toUpperCase()+c.slice(1)}</button>`
+  ).join('');
+}
+
+function renderTasks(filter) {
+  const filtered = filter === 'all' ? tasks : tasks.filter(t => t.platform === filter || t.category === filter);
+  document.getElementById('tasksList').innerHTML = filtered.map(t => `
+    <div class="task-card ${completedTasks.has(t.id)?'completed':''}">
+      <div class="task-top">
+        <div class="task-title">${t.title}</div>
+        <div class="xp-chip">+${t.xp} XP</div>
+      </div>
+      <div class="task-meta">
+        <span class="tag">${t.platform.toUpperCase()}</span>
+        <span class="tag">${t.category}</span>
+      </div>
+      <div class="task-desc">${t.desc}</div>
+      <div class="task-steps">${t.steps.map((s,i)=>`
+        <div class="task-step"><div class="step-num">${i+1}</div><div>${s}</div></div>`).join('')}
+      </div>
+      <button class="task-complete-btn ${completedTasks.has(t.id)?'done':''}" onclick="completeTask(${t.id},${t.xp},this)">
+        ${completedTasks.has(t.id)?'✓ Completed':'Mark as Complete'}
+      </button>
+    </div>`).join('');
+}
+
+function filterTasks(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTasks(filter);
+}
+
+function completeTask(id, earnedXP, btn) {
+  if (completedTasks.has(id)) return;
+  completedTasks.add(id);
+  xp += earnedXP;
+  save();
+  btn.textContent = '✓ Completed';
+  btn.classList.add('done');
+  btn.closest('.task-card').classList.add('completed');
+  updateCert();
+}
+
+// ══════════════════════════════════════════
+// SHORTCUTS
+// ══════════════════════════════════════════
+const metaShortcuts = [
+  {keys:['G','then','C'],action:'Go to Campaigns',desc:'Jump to campaigns view from anywhere in Ads Manager',context:'Navigation'},
+  {keys:['G','then','A'],action:'Go to Ad Sets',desc:'Jump to ad sets view',context:'Navigation'},
+  {keys:['G','then','D'],action:'Go to Ads',desc:'Jump to individual ads view',context:'Navigation'},
+  {keys:['F'],action:'Open Filters',desc:'Quickly open the filter panel to segment data',context:'Filtering'},
+  {keys:['Ctrl/⌘','+','Enter'],action:'Publish Draft',desc:'Publish a drafted campaign, ad set, or ad',context:'Publishing'},
+  {keys:['Ctrl/⌘','+','D'],action:'Duplicate Selected',desc:'Duplicate selected campaign, ad set, or ad',context:'Editing'},
+  {keys:['?'],action:'Keyboard Shortcut Help',desc:'Show the full keyboard shortcut reference panel',context:'Help'},
+  {keys:['Ctrl/⌘','+','Z'],action:'Undo Last Action',desc:'Undo your last bulk edit or change',context:'Editing'},
+  {keys:['E'],action:'Edit Selected',desc:'Open the edit panel for selected item',context:'Editing'},
+  {keys:['Shift','+','Click'],action:'Multi-Select Range',desc:'Select a range of items between two clicks',context:'Selection'},
+  {keys:['Ctrl/⌘','+','A'],action:'Select All',desc:'Select all visible rows in current view',context:'Selection'},
+  {keys:['R'],action:'Refresh Data',desc:'Refresh current view to get latest performance data',context:'Navigation'},
+];
+const googleShortcuts = [
+  {keys:['G','then','C'],action:'Go to Campaigns',desc:'Navigate to the Campaigns overview',context:'Navigation'},
+  {keys:['G','then','K'],action:'Go to Keywords',desc:'Jump to keywords view',context:'Navigation'},
+  {keys:['G','then','A'],action:'Go to Ads',desc:'Jump to ads view',context:'Navigation'},
+  {keys:['G','then','E'],action:'Go to Extensions',desc:'Navigate to assets/extensions tab',context:'Navigation'},
+  {keys:['Ctrl/⌘','+','E'],action:'Edit Selected',desc:'Bulk edit selected items',context:'Editing'},
+  {keys:['Ctrl/⌘','+','D'],action:'Download Report',desc:'Download current view as a report',context:'Reporting'},
+  {keys:['?'],action:'Show Keyboard Shortcuts',desc:'Display all available keyboard shortcuts',context:'Help'},
+  {keys:['Ctrl/⌘','+','F'],action:'Find & Replace',desc:'Open find and replace in bulk editor',context:'Editing'},
+  {keys:['Tab'],action:'Next Field',desc:'Move to next editable field in bulk editor',context:'Editing'},
+  {keys:['Esc'],action:'Cancel / Close',desc:'Close current editing panel or cancel bulk edit',context:'Navigation'},
+  {keys:['Shift','+','Click'],action:'Select Range',desc:'Select multiple rows between two clicks',context:'Selection'},
+  {keys:['Ctrl/⌘','+','Shift','+','D'],action:'Schedule Report',desc:'Access the schedule report dialog',context:'Reporting'},
+];
+
+function renderShortcuts(platform) {
+  const data = platform==='meta' ? metaShortcuts : googleShortcuts;
+  document.getElementById('shortcutsGrid').innerHTML = data.map(s=>`
+    <div class="shortcut-card">
+      <div class="shortcut-keys">${s.keys.map(k=>k==='+'||k==='then'?`<span class="key-plus">${k}</span>`:`<span class="key">${k}</span>`).join('')}</div>
+      <div class="shortcut-action">${s.action}</div>
+      <div class="shortcut-desc">${s.desc}</div>
+      <div class="shortcut-context">${s.context}</div>
+    </div>`).join('');
+}
+
+function showShortcuts(platform, btn) {
+  document.querySelectorAll('.sh-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderShortcuts(platform);
+}
+
+// ══════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════
+const questions = [
+  {q:'What is the primary purpose of event deduplication in Meta Pixel + CAPI setup?',opts:['To track more conversions','To prevent double-counting when both browser and server events fire','To improve Event Match Quality','To bypass iOS 14 restrictions'],ans:1,exp:'When both Pixel and CAPI send the same event, Meta would count it twice without deduplication. Matching event_id tells Meta these are the same event from two sources.'},
+  {q:'In Meta Ads, "Learning Limited" status means:',opts:['Your campaign has graduated from learning','Your ad set received <50 optimization events in 7 days','Your budget is too high','Your audience is too broad'],ans:1,exp:'Learning Limited means the algorithm didn\'t get enough conversion signals (50+) in 7 days. Fix by consolidating ad sets or switching to a higher-funnel event.'},
+  {q:'What does tROAS of 400% mean in Google Smart Bidding?',opts:['Spend ₹400 to earn ₹1','₹4 revenue for every ₹1 spent','CTR target of 4%','Return from 4 campaigns'],ans:1,exp:'tROAS is a percentage. 400% = ₹4 revenue per ₹1 ad spend.'},
+  {q:'Which Google Ads campaign type runs across ALL Google inventory from one campaign?',opts:['Universal App','Smart Display','Performance Max','Demand Gen'],ans:2,exp:'Performance Max serves across Search, Display, YouTube, Discover, Gmail, and Maps from a single campaign.'},
+  {q:'Max budget increase % when scaling Meta campaigns to avoid resetting learning:',opts:['10%','20–30%','50%','100%'],ans:1,exp:'Increasing budget by more than 20–30% at once can restart the learning phase. Make incremental increases every 3–5 days.'},
+  {q:'Ad Rank in Google Ads is determined by:',opts:['Bid amount only','Bid × Quality Score × Expected extension impact','Quality Score only','Daily budget × CTR'],ans:1,exp:'Ad Rank = Max Bid × Quality Score × Expected Impact of Extensions. Higher QS = lower CPC for same position.'},
+  {q:'Meta\'s AEM allows you to prioritize up to how many events per domain?',opts:['3','5','8','10'],ans:2,exp:'AEM allows prioritization of up to 8 events per domain. The highest-priority event receives most accurate reporting for iOS users.'},
+  {q:'RLSA stands for:',opts:['Remarketing Lists for Search Ads','Return on Last Search Action','Responsive Landing & Search Ads','Real-time Lead Scoring Algorithm'],ans:0,exp:'RLSA = Remarketing Lists for Search Ads. Adjust bids, ads, and keywords based on whether searchers visited your website.'},
+  {q:'In GA4, what replaced "Goals" from Universal Analytics?',opts:['Funnels','Key Events','Conversions tab','Custom reports'],ans:1,exp:'GA4 uses "Key Events" to mark important actions. These power Smart Bidding when linked to Google Ads.'},
+  {q:'Incrementality measures:',opts:['CTR improvement week-over-week','True causal lift in conversions due to ads vs organic','Percentage budget increase','Campaign overlap'],ans:1,exp:'Incrementality = true causal impact. Platform-reported conversions include people who would have converted anyway. Holdout tests measure only the lift caused by ads.'},
+  {q:'Which Meta bid strategy gives the most control over individual auction bids?',opts:['Highest Volume','Cost Cap','Bid Cap','Minimum ROAS'],ans:2,exp:'Bid Cap sets a hard maximum on what Meta bids in each auction. Most restrictive but maximum bid control.'},
+  {q:'Quality Score in Google Ads ranges from:',opts:['0–5','1–10','0–100','1–20'],ans:1,exp:'Quality Score is 1–10, composed of Expected CTR, Ad Relevance, and Landing Page Experience.'},
+  {q:'What is the primary benefit of Meta\'s Conversions API (CAPI)?',opts:['Lower ad costs','Server-side tracking that bypasses browser privacy restrictions','Faster campaign approval','Better creative recommendations'],ans:1,exp:'CAPI sends events server-to-server, bypassing iOS restrictions, ad blockers, and cookie limitations that affect browser-based Pixel tracking.'},
+  {q:'In creative A/B testing, how long should you run tests for statistically valid results?',opts:['24 hours','3 days','At least 7 days','1 month'],ans:2,exp:'A minimum of 7 days is needed to account for day-of-week variation and gather enough conversion data for statistical significance.'},
+  {q:'What is "message match" in landing page optimization?',opts:['Your ad copy matches competitor ads','Your landing page headline matches your ad\'s promise and language','Your landing page loads quickly','Your CTA button color matches brand colors'],ans:1,exp:'Message match means your ad\'s promise is directly reflected in your landing page headline. Disconnect here causes users to bounce immediately.'},
+  {q:'Which Google keyword match type has the widest reach?',opts:['Exact','Phrase','Broad','Modified Broad'],ans:2,exp:'Broad match has the widest reach — Google can match it to loosely related queries. Requires Smart Bidding and strong negatives to be effective.'},
+  {q:'In a retargeting funnel, what should always be excluded from all ad sets?',opts:['New website visitors','People who clicked but didn\'t convert','Past purchasers','Lookalike audiences'],ans:2,exp:'Past purchasers should always be excluded from retargeting (unless you\'re running a cross-sell campaign). Showing them purchase ads wastes budget.'},
+  {q:'Advantage+ Shopping Campaigns (ASC) are Meta\'s equivalent of:',opts:['Facebook Dynamic Ads','Google Performance Max','Google Shopping','TikTok Spark Ads'],ans:1,exp:'ASC combines prospecting and retargeting across Meta\'s inventory automatically, similar to how Google PMax works across Google\'s channels.'},
+];
+
+function initQuiz() {
+  shuffledQ = [...questions].sort(()=>Math.random()-0.5);
+  currentQ = 0; quizScore = 0; quizAnswered = false;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  if (currentQ >= shuffledQ.length) {
+    xp += quizScore * 20;
+    if(quizScore >= shuffledQ.length * 0.8) { streak = Math.max(streak, streak); }
+    save();
+    document.getElementById('quizCard').innerHTML = `
+      <div class="quiz-result">
+        <div class="quiz-score">${quizScore}/${shuffledQ.length}</div>
+        <div class="quiz-score-sub">+${quizScore*20} XP earned! ${quizScore>=14?'🔥 Excellent!':quizScore>=10?'👍 Good job!':'Keep practising!'}</div>
+        <button class="quiz-restart" onclick="initQuiz()">Retake Quiz</button>
+      </div>`;
+    return;
+  }
+  const q = shuffledQ[currentQ];
+  const pct = (currentQ/shuffledQ.length)*100;
+  document.getElementById('quizCard').innerHTML = `
+    <div class="quiz-progress">
+      <span class="quiz-num">Q${currentQ+1}/${shuffledQ.length}</span>
+      <div class="quiz-bar"><div class="quiz-bar-fill" style="width:${pct}%"></div></div>
+      <span class="quiz-num">Score: ${quizScore}</span>
+    </div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i)=>`<div class="quiz-option" onclick="answerQ(${i})">${o}</div>`).join('')}</div>
+    <div class="quiz-feedback" id="qFeedback"></div>
+    <button class="quiz-next show" id="qNext" onclick="nextQ()" style="display:none">Next →</button>`;
+  quizAnswered = false;
+}
+
+function answerQ(i) {
+  if(quizAnswered) return;
+  quizAnswered = true;
+  const q = shuffledQ[currentQ];
+  document.querySelectorAll('.quiz-option').forEach(o=>o.classList.add('locked'));
+  const fb = document.getElementById('qFeedback');
+  if(i===q.ans) {
+    document.querySelectorAll('.quiz-option')[i].classList.add('correct');
+    fb.className='quiz-feedback correct show'; fb.textContent='✓ Correct! '+q.exp; quizScore++;
+  } else {
+    document.querySelectorAll('.quiz-option')[i].classList.add('wrong');
+    document.querySelectorAll('.quiz-option')[q.ans].classList.add('correct');
+    fb.className='quiz-feedback wrong show'; fb.textContent='✗ Incorrect. '+q.exp;
+  }
+  const nb = document.getElementById('qNext'); nb.style.display='block';
+}
+function nextQ() { currentQ++; renderQuestion(); }
+
+// ══════════════════════════════════════════
+// GLOSSARY
+// ══════════════════════════════════════════
+const glossaryTerms = [
+  {term:'ROAS',def:'Return on Ad Spend. Revenue ÷ ad spend. ROAS of 4 = ₹4 revenue per ₹1 spent.',platform:'META · GOOGLE'},
+  {term:'tCPA',def:'Target Cost Per Acquisition. Google Smart Bidding strategy — set your desired average CPA, Google optimizes bids to hit that target.',platform:'GOOGLE'},
+  {term:'CPM',def:'Cost Per Mille — cost per 1,000 impressions. Key for brand awareness and understanding auction competitiveness.',platform:'META · GOOGLE'},
+  {term:'Conversions API (CAPI)',def:'Meta\'s server-side tracking. Sends conversion events directly from your server to Meta, bypassing browser/iOS limitations.',platform:'META'},
+  {term:'Aggregated Event Measurement',def:'Meta\'s privacy framework for iOS 14+ users. Allows up to 8 prioritized events per domain.',platform:'META'},
+  {term:'Quality Score',def:'Google\'s 1–10 ad quality metric. Composed of Expected CTR, Ad Relevance, and Landing Page Experience. Higher QS = lower CPC.',platform:'GOOGLE'},
+  {term:'Ad Rank',def:'Formula determining Google ad position: Max Bid × Quality Score × Expected Ad Extension Impact.',platform:'GOOGLE'},
+  {term:'Lookalike Audience',def:'Meta finds people statistically similar to your source audience. 1% = most similar (smallest), 10% = broadest.',platform:'META'},
+  {term:'RLSA',def:'Remarketing Lists for Search Ads. Layer website visitor audiences on Search campaigns to adjust bids and ads.',platform:'GOOGLE'},
+  {term:'Smart Bidding',def:'Google\'s automated bid strategies (tCPA, tROAS, Max Conversions, Max Value) using ML at auction time.',platform:'GOOGLE'},
+  {term:'Performance Max',def:'Google campaign type serving across all inventory (Search, Display, YouTube, Discover, Gmail, Maps) from one campaign.',platform:'GOOGLE'},
+  {term:'Learning Phase',def:'Period when Meta\'s algorithm gathers data to optimize delivery. Requires ~50 optimization events in 7 days.',platform:'META'},
+  {term:'Learning Limited',def:'Meta status: ad set received <50 optimization events in 7 days. Fix by consolidating ad sets or choosing a higher-funnel event.',platform:'META'},
+  {term:'Event Match Quality (EMQ)',def:'Meta\'s score (1–10) for how well conversion events can be matched to Facebook users. Higher EMQ improves optimization.',platform:'META'},
+  {term:'Incrementality',def:'True causal lift in conversions from advertising. Measured via holdout tests. Platform ROAS is almost always 30–50% higher than true incremental ROAS.',platform:'META · GOOGLE'},
+  {term:'Data-Driven Attribution',def:'ML-based model distributing conversion credit across all touchpoints based on actual contribution, not last/first click.',platform:'META · GOOGLE'},
+  {term:'Customer Match',def:'Upload CRM data (hashed emails/phones) to target, exclude, or create similar audiences from your existing customer base.',platform:'META · GOOGLE'},
+  {term:'Frequency',def:'Average times a unique user sees your ad in a window. High frequency (>3.5) signals audience fatigue → refresh creative.',platform:'META'},
+  {term:'Enhanced Conversions',def:'Google feature sending hashed first-party data alongside conversion tags. Can recover 5–10% of unmatched conversions.',platform:'GOOGLE'},
+  {term:'Seasonality Adjustment',def:'Google Smart Bidding tool to signal expected CVR changes during specific periods (sale events, holidays).',platform:'GOOGLE'},
+  {term:'Dynamic Creative Optimization (DCO)',def:'Upload multiple ad components (headlines, images, CTAs). Meta/Google automatically test combinations to find best-performing for each user.',platform:'META · GOOGLE'},
+  {term:'Message Match',def:'Alignment between your ad\'s promise and landing page headline. Poor message match is a top cause of high bounce rate.',platform:'META · GOOGLE'},
+  {term:'Advantage+ Shopping (ASC)',def:'Meta\'s automated shopping campaign combining prospecting and retargeting across all Meta placements from one campaign.',platform:'META'},
+  {term:'Broad Match',def:'Google keyword match type with widest reach. Google can show your ad for loosely related queries. Requires Smart Bidding and strong negatives.',platform:'GOOGLE'},
+  {term:'Click-to-WhatsApp Ads',def:'Meta ad format where clicking opens a WhatsApp conversation with your business. High-performing in India, SEA, LATAM.',platform:'META'},
+];
+
+function renderGlossary(s) {
+  const f = glossaryTerms.filter(t=>t.term.toLowerCase().includes(s.toLowerCase())||t.def.toLowerCase().includes(s.toLowerCase()));
+  document.getElementById('glossaryList').innerHTML = f.map(t=>`
+    <div class="glossary-item">
+      <div class="glossary-term">${t.term}</div>
+      <div class="glossary-def">${t.def}</div>
+      <div class="glossary-platform">${t.platform}</div>
+    </div>`).join('');
+}
+function filterGlossary(v) { renderGlossary(v); }
+
+// ══════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════
+const fakeLeaders = [
+  {name:'Priya S.',xp:2840,streak:14,avatar:'P'},
+  {name:'Arjun M.',xp:2210,streak:9,avatar:'A'},
+  {name:'Divya K.',xp:1950,streak:7,avatar:'D'},
+  {name:'Srijana M R',xp:0,streak:0,avatar:'S',me:true},
+  {name:'Rahul V.',xp:1420,streak:5,avatar:'R'},
+  {name:'Sneha T.',xp:980,streak:3,avatar:'S'},
+];
+
+function renderLeaderboard() {
+  // Update Srijana's entry with real xp/streak
+  const me = fakeLeaders.find(l=>l.me);
+  me.xp = xp; me.streak = streak;
+  const sorted = [...fakeLeaders].sort((a,b)=>b.xp-a.xp);
+  const medals = ['🥇','🥈','🥉'];
+
+  document.getElementById('leaderboardCard').innerHTML = `
+    <div class="lb-header"><div class="lb-title">Top Learners</div><div style="font-size:0.72rem;color:var(--muted);font-family:'JetBrains Mono'">XP RANKINGS</div></div>
+    ${sorted.map((l,i)=>`
+      <div class="lb-row ${l.me?'me':''}">
+        <div class="lb-rank">${medals[i]||i+1}</div>
+        <div class="lb-avatar">${l.avatar}</div>
+        <div class="lb-name">${l.name}${l.me?' (You)':''}</div>
+        <div class="lb-streak">🔥${l.streak}d</div>
+        <div class="lb-xp">⚡${l.xp} XP</div>
+      </div>`).join('')}`;
+
+  // Streak days
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const today = new Date().getDay();
+  document.getElementById('streakDays').innerHTML = days.map((d,i)=>{
+    const dayIdx = i === 0 ? 1 : i+1;
+    const isDone = streak > 0 && dayIdx <= today;
+    const isToday = dayIdx === today;
+    return `<div class="streak-day ${isToday?'today':isDone?'done':''}">${d}</div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// CERTIFICATE
+// ══════════════════════════════════════════
+function updateCert() {
+  const totalTasks = tasks.length;
+  const totalLessons = modulesData.length;
+  const doneTasks = completedTasks.size;
+  const doneLessons = completedLessons.size;
+  const totalItems = totalTasks + totalLessons;
+  const doneItems = doneTasks + doneLessons;
+  const pct = Math.round((doneItems/totalItems)*100);
+  const unlocked = pct >= 70;
+
+  document.getElementById('certContent').innerHTML = `
+    <div class="cert-preview ${unlocked?'':'cert-locked'}">
+      <div class="cert-badge">${unlocked?'🎓':'🔒'}</div>
+      <div class="cert-label">CERTIFICATE OF COMPLETION</div>
+      <div class="cert-title">Performance Marketing Mastery</div>
+      <div class="cert-name">Srijana M R</div>
+      <div class="cert-desc">Has demonstrated practical knowledge and skills in Meta Ads, Google Ads, conversion tracking, bidding strategies, audience strategy, creative testing, and performance measurement.</div>
+      <div class="cert-meta">
+        <div class="cert-meta-item"><div class="val">${doneLessons}/${totalLessons}</div><div class="key">MODULES</div></div>
+        <div class="cert-meta-item"><div class="val">${doneTasks}/${totalTasks}</div><div class="key">TASKS</div></div>
+        <div class="cert-meta-item"><div class="val">${xp}</div><div class="key">XP EARNED</div></div>
+        <div class="cert-meta-item"><div class="val">${streak}d</div><div class="key">STREAK</div></div>
+      </div>
+    </div>
+    <div class="cert-progress-bar"><div class="cert-progress-fill" style="width:${pct}%"></div></div>
+    <div class="cert-progress-label">${pct}% complete — ${unlocked?'Certificate unlocked! 🎉':'Complete 70% of modules and tasks to unlock your certificate'}</div>
+    ${unlocked ? `<button class="btn btn-primary" onclick="printCert()">Download Certificate</button>` :
+      `<div class="cert-unlock-hint">⚡ ${doneItems}/${totalItems} items done · Need ${Math.ceil(totalItems*0.7)-doneItems} more to unlock</div>`}
+  `;
+}
+
+function printCert() { window.print(); }
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const names=['home','learn','tasks','shortcuts','quiz','glossary','leaderboard','certificate'];
+  const tabs = document.querySelectorAll('.nav-tab');
+  const idx = names.indexOf(name);
+  if(idx>=0 && tabs[idx]) tabs[idx].classList.add('active');
+
+  if(name==='home') renderModulesGrid();
+  if(name==='learn') { renderSidebar(); loadLesson(currentLesson); }
+  if(name==='tasks') { renderTaskFilters(); renderTasks('all'); }
+  if(name==='shortcuts') renderShortcuts('meta');
+  if(name==='quiz') initQuiz();
+  if(name==='glossary') renderGlossary('');
+  if(name==='leaderboard') renderLeaderboard();
+  if(name==='certificate') updateCert();
+}
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark?'dark':'light');
+  document.querySelector('.theme-toggle').textContent = isDark?'🌙':'☀️';
+}
+
+function openMobileNav() {
+  document.getElementById('mobileNavMenu').classList.add('open');
+  document.getElementById('mobileOverlay').style.display='block';
+}
+function closeMobileNav() {
+  document.getElementById('mobileNavMenu').classList.remove('open');
+  document.getElementById('mobileOverlay').style.display='none';
+}
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+save();
+renderModulesGrid();
+renderSidebar();
+renderGlossary('');
+renderShortcuts('meta');
+renderTaskFilters();
+renderTasks('all');
+updateCert();
+</script>
+</body>
+</html>
