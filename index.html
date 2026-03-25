@@ -136,22 +136,25 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:14px 2
 
 /* YT SECTION */
 .yt-section{margin-top:28px;padding-top:20px;border-top:1px solid var(--border);}
-.yt-section-title{font-size:0.68rem;font-family:'JetBrains Mono';color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+/* YT SECTION - Search-based (always working) */
+.yt-section-title{font-size:0.68rem;font-family:'JetBrains Mono';color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
 .yt-section-title::before{content:'▶';width:18px;height:18px;background:#FF0000;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:0.55rem;color:#fff;flex-shrink:0;}
-.yt-grid{display:flex;flex-direction:column;gap:12px;}
-.yt-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s;}
-.yt-card:hover{border-color:rgba(255,0,0,0.4);}
-.yt-embed-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;cursor:pointer;}
-.yt-thumbnail{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.82;}
-.yt-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(255,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,0.5);transition:transform 0.2s,background 0.2s;}
-.yt-embed-wrap:hover .yt-play-btn{transform:translate(-50%,-50%) scale(1.1);background:#FF0000;}
-.yt-play-btn::after{content:'▶';color:#fff;font-size:1rem;margin-left:3px;}
-.yt-embed-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.yt-info{padding:10px 14px;}
-.yt-video-title{font-size:0.84rem;font-weight:700;line-height:1.4;margin-bottom:3px;}
-.yt-channel{font-size:0.7rem;color:var(--muted);font-family:'JetBrains Mono';}
-.yt-tag{font-size:0.6rem;padding:2px 6px;border-radius:7px;background:rgba(255,0,0,0.1);color:#ff7b72;font-family:'JetBrains Mono';margin-left:5px;}
-
+.yt-note{font-size:0.74rem;color:var(--muted);margin-bottom:12px;line-height:1.5;}
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.yt-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all 0.2s;text-decoration:none;display:block;}
+.yt-card:hover{border-color:#FF0000;transform:translateY(-2px);box-shadow:0 4px 16px rgba(255,0,0,0.12);}
+.yt-card-inner{padding:12px;}
+.yt-icon-row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.yt-red-icon{width:24px;height:24px;background:#FF0000;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#fff;flex-shrink:0;}
+.yt-channel-name{font-size:0.66rem;font-family:'JetBrains Mono';color:var(--muted);}
+.yt-video-title{font-size:0.8rem;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:5px;}
+.yt-tag{display:inline-block;font-size:0.58rem;padding:2px 6px;border-radius:6px;background:rgba(255,0,0,0.1);color:#ff7b72;font-family:'JetBrains Mono';}
+.yt-open-label{font-size:0.65rem;color:var(--muted);margin-top:6px;}
+.yt-channels-box{background:rgba(255,0,0,0.04);border:1px solid rgba(255,0,0,0.12);border-radius:10px;padding:12px 14px;margin-top:12px;}
+.yt-channels-title{font-size:0.66rem;font-family:'JetBrains Mono';color:#ff7b72;margin-bottom:7px;}
+.yt-channels-list{display:flex;flex-wrap:wrap;gap:6px;}
+.yt-channel-pill{padding:3px 10px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:0.68rem;color:var(--text);text-decoration:none;transition:all 0.2s;font-family:'JetBrains Mono';}
+.yt-channel-pill:hover{border-color:#FF0000;color:#ff7b72;}
 /* TASKS */
 .tasks-container{padding:24px;max-width:900px;margin:0 auto;}
 .task-filters{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap;}
@@ -766,49 +769,137 @@ Transactional intent: "buy running shoes online India"
 // ══════════════════════════════════════════
 // YOUTUBE VIDEOS
 // ══════════════════════════════════════════
+// ══ YOUTUBE — search-link approach (always works, never 404) ══
 const lessonVideos = {
-  pixel:         [{id:'jLvRFvnUMac',title:'Meta Pixel Setup Complete Guide 2024',channel:'Ben Heath',tag:'BEGINNER'},{id:'Ez_LkBrDhBg',title:'Meta Pixel & Events – Full Tutorial',channel:'Surfside PPC',tag:'SETUP'},{id:'D4NkKHAz5S4',title:'Facebook Pixel Explained in 8 Minutes',channel:'Adam Erhart',tag:'QUICK'}],
-  gtag:          [{id:'EKN4C8M6KSc',title:'Google Tag Manager Full Course 2024',channel:'Loves Data',tag:'FULL COURSE'},{id:'A59kkh1Glkg',title:'GA4 & Google Ads Conversion Tracking',channel:'Paid Media Pros',tag:'TRACKING'},{id:'Wr-RH4e_l8E',title:'Enhanced Conversions – Google Ads Tutorial',channel:'Surfside PPC',tag:'ADVANCED'}],
-  bidding:       [{id:'iXlSvPMtcTg',title:'Meta Ads Bidding Strategies Explained',channel:'Ben Heath',tag:'STRATEGY'},{id:'gA6nrJG6kBE',title:'How to Scale Facebook Ads Profitably',channel:'Paid Media Pros',tag:'SCALING'},{id:'0VcRDpFSPo8',title:'Meta Cost Cap vs Bid Cap vs Highest Volume',channel:'Andrew Foxwell',tag:'COMPARISON'}],
-  smart:         [{id:'jXZSHUPUMHs',title:'Google Ads Smart Bidding Strategies 2024',channel:'Paid Media Pros',tag:'SMART BIDDING'},{id:'Kd4WJ0R8e0c',title:'Performance Max Campaign Full Tutorial',channel:'Solutions 8',tag:'PMAX'},{id:'5VeRpv3kxgo',title:'tCPA vs tROAS – When to Use Each',channel:'Surfside PPC',tag:'BIDDING'}],
-  attribution:   [{id:'F7BPRB4TVQM',title:'Marketing Attribution Models Explained',channel:'Loves Data',tag:'ATTRIBUTION'},{id:'lMvPq2_r3pU',title:'Meta vs Google Attribution – Which to Trust?',channel:'Paid Media Pros',tag:'MEASUREMENT'},{id:'nPGBqnk2iFk',title:'Incrementality Testing – The Real ROAS',channel:'Andrew Foxwell',tag:'ADVANCED'}],
-  audience:      [{id:'FTs-A0NBRMU',title:'Meta Lookalike Audiences Full Guide',channel:'Ben Heath',tag:'AUDIENCES'},{id:'V7HXLkBIBxA',title:'Google Ads Audience Targeting – RLSA & More',channel:'Surfside PPC',tag:'RLSA'},{id:'OP-3gGy0e6M',title:'Customer Match & First-Party Data Strategy',channel:'Paid Media Pros',tag:'FIRST-PARTY'}],
-  creative:      [{id:'9bZkp7q19f0',title:'Facebook Ad Creative Testing Strategy',channel:'Ben Heath',tag:'CREATIVE'},{id:'tQ2oiMiJdaQ',title:'How to Test Facebook Ads Creative in 2024',channel:'Paid Media Pros',tag:'A/B TESTING'},{id:'X7uBPnm4eTg',title:'Dynamic Creative Optimization – Full Guide',channel:'Andrew Foxwell',tag:'DCO'}],
-  retargeting:   [{id:'IrqfXbaBMBE',title:'Facebook Retargeting Funnel Strategy 2024',channel:'Ben Heath',tag:'FUNNELS'},{id:'q_6Zi2EZKQY',title:'Google Display Retargeting Full Setup',channel:'Surfside PPC',tag:'GOOGLE'},{id:'Qy6PkxNxkes',title:'The Perfect Retargeting Ad Sequence',channel:'Paid Media Pros',tag:'SEQUENCE'}],
-  landingpage:   [{id:'jk2pShMbgvk',title:'Landing Page Optimization for Paid Ads',channel:'CXL Institute',tag:'CRO'},{id:'T_vPVWqSGDs',title:'High Converting Landing Page Elements',channel:'Neil Patel',tag:'DESIGN'},{id:'hFTFEEMF65A',title:'A/B Testing Landing Pages – Step by Step',channel:'Loves Data',tag:'TESTING'}],
-  whatsapp:      [{id:'JkDf2aXSoAI',title:'Meta Lead Gen Ads Full Setup 2024',channel:'Ben Heath',tag:'LEAD GEN'},{id:'vNrTJXMwKiE',title:'Click to WhatsApp Ads Tutorial',channel:'Paid Media Pros',tag:'WHATSAPP'},{id:'WBpBF8y1_Xo',title:'Instant Forms Best Practices for High Quality Leads',channel:'Andrew Foxwell',tag:'FORMS'}],
-  ecommerce:     [{id:'QK7SeFMvpGE',title:'Advantage+ Shopping Campaigns Full Guide',channel:'Ben Heath',tag:'ASC'},{id:'3RNijzMRKMo',title:'Meta Dynamic Product Ads Setup & Strategy',channel:'Paid Media Pros',tag:'DPA'},{id:'SZR9s8dOIXs',title:'Facebook Catalogue Ads for eCommerce',channel:'Surfside PPC',tag:'CATALOGUE'}],
-  attrmodel:     [{id:'F7BPRB4TVQM',title:'Attribution Models Compared – Which Wins?',channel:'Loves Data',tag:'MODELS'},{id:'nPGBqnk2iFk',title:'Cross-Channel Attribution Explained',channel:'Paid Media Pros',tag:'CROSS-CHANNEL'},{id:'2CvFI2GVpuA',title:'Data-Driven Attribution – How It Works',channel:'Google Ads',tag:'OFFICIAL'}],
-  searchstructure:[{id:'vFt3TiflJco',title:'Google Ads Account Structure Best Practices',channel:'Surfside PPC',tag:'STRUCTURE'},{id:'FXVPiC3VfWs',title:'How to Structure Google Search Campaigns',channel:'Paid Media Pros',tag:'CAMPAIGNS'},{id:'FkJdcFLeMnI',title:'RSA Best Practices – Google Ads',channel:'Google Ads',tag:'OFFICIAL'}],
-  matchtypes:    [{id:'EuvXdJiOcXE',title:'Keyword Match Types Explained 2024',channel:'Surfside PPC',tag:'MATCH TYPES'},{id:'7bMOFVHBP-o',title:'Broad Match vs Exact Match in 2024',channel:'Paid Media Pros',tag:'STRATEGY'},{id:'VxPVVJQoFVU',title:'Keyword Strategy for Google Search',channel:'Solutions 8',tag:'KEYWORDS'}],
+  pixel:[
+    {title:'Meta Pixel Complete Setup 2024',channel:'Ben Heath',tag:'BEGINNER',q:'meta pixel setup 2024 ben heath'},
+    {title:'Meta Pixel Events & Conversions Tutorial',channel:'Surfside PPC',tag:'EVENTS',q:'meta pixel events conversions tracking surfside ppc'},
+    {title:'iOS 14 & Meta Pixel – What You Must Know',channel:'Andrew Foxwell',tag:'iOS14',q:'meta pixel ios14 facebook ads andrew foxwell'},
+  ],
+  gtag:[
+    {title:'Google Tag Manager Full Tutorial 2024',channel:'Loves Data',tag:'GTM',q:'google tag manager tutorial 2024 loves data'},
+    {title:'GA4 + Google Ads Conversion Tracking Setup',channel:'Paid Media Pros',tag:'GA4',q:'ga4 google ads conversion tracking setup paid media pros'},
+    {title:'Enhanced Conversions Google Ads Tutorial',channel:'Surfside PPC',tag:'ENHANCED',q:'enhanced conversions google ads setup tutorial'},
+  ],
+  bidding:[
+    {title:'Meta Bidding Strategies Explained',channel:'Ben Heath',tag:'BIDDING',q:'meta facebook ads bidding strategies cost cap bid cap 2024'},
+    {title:'How to Scale Meta Ads Profitably',channel:'Paid Media Pros',tag:'SCALING',q:'scale facebook meta ads profitably budget increase'},
+    {title:'Meta Ads Budget & Bidding Masterclass',channel:'Andrew Foxwell',tag:'ADVANCED',q:'meta ads budget bidding masterclass foxwell'},
+  ],
+  smart:[
+    {title:'Google Smart Bidding Full Guide 2024',channel:'Paid Media Pros',tag:'SMART BID',q:'google ads smart bidding tCPA tROAS 2024 guide'},
+    {title:'Performance Max Campaigns Tutorial',channel:'Solutions 8',tag:'PMAX',q:'google performance max campaign tutorial solutions 8'},
+    {title:'tCPA vs tROAS – When to Use Each',channel:'Surfside PPC',tag:'tCPA/tROAS',q:'google ads tcpa vs troas when to use smart bidding'},
+  ],
+  attribution:[
+    {title:'Attribution Models Explained Simply',channel:'Loves Data',tag:'MODELS',q:'marketing attribution models explained loves data google'},
+    {title:'Meta vs Google – Which Attribution to Trust?',channel:'Paid Media Pros',tag:'CROSS-CHANNEL',q:'meta google attribution which to trust paid media pros'},
+    {title:'Incrementality Testing for Marketers',channel:'Andrew Foxwell',tag:'INCREMENTALITY',q:'incrementality testing facebook ads lift study'},
+  ],
+  audience:[
+    {title:'Meta Lookalike Audiences Complete Guide',channel:'Ben Heath',tag:'LAL',q:'meta facebook lookalike audiences guide ben heath 2024'},
+    {title:'Google Ads RLSA Audience Targeting',channel:'Surfside PPC',tag:'RLSA',q:'google ads RLSA remarketing lists search ads tutorial'},
+    {title:'Customer Match & First-Party Data Strategy',channel:'Paid Media Pros',tag:'CRM',q:'customer match first party data google meta ads strategy'},
+  ],
+  creative:[
+    {title:'Facebook Creative Testing Strategy 2024',channel:'Ben Heath',tag:'A/B TEST',q:'facebook meta ads creative testing strategy 2024 ben heath'},
+    {title:'Ad Creative Frameworks That Convert',channel:'Paid Media Pros',tag:'CREATIVE',q:'facebook ad creative frameworks that convert paid media pros'},
+    {title:'Dynamic Creative Optimization Guide',channel:'Andrew Foxwell',tag:'DCO',q:'meta dynamic creative optimization DCO facebook ads'},
+  ],
+  retargeting:[
+    {title:'Facebook Retargeting Funnel 2024',channel:'Ben Heath',tag:'FUNNELS',q:'facebook retargeting funnel strategy 2024 ben heath'},
+    {title:'Google Display Retargeting Setup',channel:'Surfside PPC',tag:'GOOGLE',q:'google display retargeting campaign setup tutorial'},
+    {title:'Perfect Retargeting Ad Sequence',channel:'Paid Media Pros',tag:'SEQUENCE',q:'retargeting ad sequence tofu mofu bofu paid media pros'},
+  ],
+  landingpage:[
+    {title:'Landing Page CRO for Paid Ads',channel:'CXL',tag:'CRO',q:'landing page optimization paid ads conversion rate CXL'},
+    {title:'High-Converting Landing Pages Breakdown',channel:'Neil Patel',tag:'DESIGN',q:'high converting landing page design elements neil patel'},
+    {title:'A/B Testing Landing Pages Tutorial',channel:'Loves Data',tag:'TESTING',q:'ab testing landing pages google optimize tutorial'},
+  ],
+  whatsapp:[
+    {title:'Meta Lead Generation Ads Full Setup',channel:'Ben Heath',tag:'LEAD GEN',q:'meta facebook lead generation ads setup 2024 ben heath'},
+    {title:'Click-to-WhatsApp Ads Tutorial',channel:'Paid Media Pros',tag:'WHATSAPP',q:'click to whatsapp ads facebook meta tutorial 2024'},
+    {title:'Lead Form Quality Optimization Tips',channel:'Andrew Foxwell',tag:'QUALITY',q:'meta facebook instant form lead quality optimization'},
+  ],
+  ecommerce:[
+    {title:'Advantage+ Shopping Campaigns Guide',channel:'Ben Heath',tag:'ASC',q:'advantage plus shopping campaigns meta facebook ads 2024'},
+    {title:'Dynamic Product Ads Setup & Strategy',channel:'Paid Media Pros',tag:'DPA',q:'meta dynamic product ads catalogue setup strategy'},
+    {title:'Facebook Catalogue Ads for eCommerce',channel:'Surfside PPC',tag:'CATALOGUE',q:'facebook catalogue ads ecommerce dynamic retargeting'},
+  ],
+  attrmodel:[
+    {title:'All Attribution Models Compared',channel:'Loves Data',tag:'MODELS',q:'google analytics attribution models compared first last data driven'},
+    {title:'Cross-Channel Attribution Deep Dive',channel:'Paid Media Pros',tag:'ADVANCED',q:'cross channel attribution multi touch marketing paid media'},
+    {title:'Data-Driven Attribution Explained',channel:'Google',tag:'OFFICIAL',q:'data driven attribution google ads how it works explained'},
+  ],
+  searchstructure:[
+    {title:'Google Ads Account Structure 2024',channel:'Surfside PPC',tag:'STRUCTURE',q:'google ads account structure best practices 2024 surfside ppc'},
+    {title:'Search Campaign Structure Strategy',channel:'Paid Media Pros',tag:'CAMPAIGNS',q:'google search campaign structure strategy paid media pros 2024'},
+    {title:'RSA Responsive Search Ads Best Practices',channel:'Google',tag:'OFFICIAL',q:'google responsive search ads RSA best practices official'},
+  ],
+  matchtypes:[
+    {title:'Keyword Match Types Explained 2024',channel:'Surfside PPC',tag:'MATCH TYPES',q:'google ads keyword match types explained 2024 broad exact phrase'},
+    {title:'Broad Match vs Exact Match Strategy',channel:'Paid Media Pros',tag:'STRATEGY',q:'google ads broad match vs exact match 2024 strategy'},
+    {title:'Keyword Strategy for Google Search',channel:'Solutions 8',tag:'KEYWORDS',q:'google ads keyword strategy search campaign solutions 8'},
+  ],
 };
+
+// Recommended channels per lesson
+const lessonChannels = {
+  pixel:['Ben Heath','Surfside PPC','Adam Erhart'],
+  gtag:['Loves Data','Paid Media Pros','Analytics Mania'],
+  bidding:['Ben Heath','Paid Media Pros','Andrew Foxwell'],
+  smart:['Paid Media Pros','Solutions 8','Surfside PPC'],
+  attribution:['Loves Data','Paid Media Pros','Andrew Foxwell'],
+  audience:['Ben Heath','Surfside PPC','Paid Media Pros'],
+  creative:['Ben Heath','Paid Media Pros','Andrew Foxwell'],
+  retargeting:['Ben Heath','Paid Media Pros','Surfside PPC'],
+  landingpage:['CXL Institute','Neil Patel','ConversionXL'],
+  whatsapp:['Ben Heath','Paid Media Pros','Andrew Foxwell'],
+  ecommerce:['Ben Heath','Paid Media Pros','Surfside PPC'],
+  attrmodel:['Loves Data','Paid Media Pros','Analytics Mania'],
+  searchstructure:['Surfside PPC','Paid Media Pros','Solutions 8'],
+  matchtypes:['Surfside PPC','Paid Media Pros','Solutions 8'],
+};
+
+function ytSearchURL(q) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q);
+}
+function channelSearchURL(ch) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(ch + ' ads tutorial');
+}
 
 function renderYT(lessonId) {
   const vids = lessonVideos[lessonId] || [];
+  const channels = lessonChannels[lessonId] || [];
   if (!vids.length) return '';
   return `<div class="yt-section">
     <div class="yt-section-title">Recommended Video Tutorials</div>
+    <p class="yt-note">Click any card to search YouTube for that tutorial. Videos open in a new tab so you never lose your place.</p>
     <div class="yt-grid">${vids.map(v => `
-      <div class="yt-card">
-        <div class="yt-embed-wrap" id="yt-${v.id}" onclick="loadYT('${v.id}')">
-          <img class="yt-thumbnail" src="https://img.youtube.com/vi/${v.id}/hqdefault.jpg" alt="${v.title}">
-          <div class="yt-play-btn"></div>
-        </div>
-        <div class="yt-info">
+      <a class="yt-card" href="${ytSearchURL(v.q)}" target="_blank" rel="noopener">
+        <div class="yt-card-inner">
+          <div class="yt-icon-row">
+            <div class="yt-red-icon">▶</div>
+            <span class="yt-channel-name">${v.channel}</span>
+          </div>
           <div class="yt-video-title">${v.title}</div>
-          <div class="yt-channel">${v.channel}<span class="yt-tag">${v.tag}</span></div>
+          <span class="yt-tag">${v.tag}</span>
+          <div class="yt-open-label">Search on YouTube ↗</div>
         </div>
-      </div>`).join('')}
+      </a>`).join('')}
     </div>
+    ${channels.length ? `<div class="yt-channels-box">
+      <div class="yt-channels-title">📺 TOP CHANNELS TO FOLLOW FOR THIS TOPIC</div>
+      <div class="yt-channels-list">${channels.map(ch =>
+        `<a class="yt-channel-pill" href="${channelSearchURL(ch)}" target="_blank" rel="noopener">${ch}</a>`
+      ).join('')}</div>
+    </div>` : ''}
   </div>`;
-}
-function loadYT(id) {
-  const w = document.getElementById('yt-'+id);
-  if(w) w.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1&rel=0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
 }
 
 // ══════════════════════════════════════════
 // LOAD LESSON
+// ══════════════════════════════════════════
 // ══════════════════════════════════════════
 function loadLesson(id) {
   currentLesson = id;
